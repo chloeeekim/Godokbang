@@ -1,6 +1,7 @@
 package chloe.godokbang.controller;
 
 import chloe.godokbang.dto.request.JoinRequest;
+import chloe.godokbang.dto.request.LoginRequest;
 import chloe.godokbang.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -8,13 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("")
 public class UserController {
 
     private final UserService userService;
@@ -52,6 +52,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String getLoginPage(Model model) {
+        model.addAttribute("loginRequest", new LoginRequest());
         return "login";
     }
 }
