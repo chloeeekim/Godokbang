@@ -32,8 +32,8 @@ public class User extends BaseEntity {
     private UserRole role;
 
     @Builder
-    public User(String email, String passwordHash, String nickname, UserRole role) {
-        this.email = email;
+    public User(String loginId, String passwordHash, String nickname, UserRole role) {
+        this.email = loginId;
         this.passwordHash = passwordHash;
         this.nickname = nickname;
         this.role = role == null ? UserRole.USER : role;

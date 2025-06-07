@@ -4,11 +4,10 @@ import chloe.godokbang.domain.User;
 import chloe.godokbang.domain.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class JoinRequest {
 
@@ -35,7 +34,7 @@ public class JoinRequest {
 
     public User toEntity(String encodedPassword) {
         return User.builder()
-                .email(this.email)
+                .loginId(this.email)
                 .passwordHash(encodedPassword)
                 .nickname(this.nickname)
                 .role(UserRole.USER)

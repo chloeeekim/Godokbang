@@ -20,8 +20,8 @@ public class UserService {
      * @param email 이메일
      * @return 이메일 중복 여부
      */
-    public boolean checkEmailExists(String email) {
-        return userRepository.existByEmail(email);
+    public boolean checkLoginIdExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     /**
@@ -30,7 +30,7 @@ public class UserService {
      * @return 닉네임 중복 여부
      */
     public boolean checkNicknameExists(String nickname) {
-        return userRepository.existByNickname(nickname);
+        return userRepository.existsByNickname(nickname);
     }
 
     /**
