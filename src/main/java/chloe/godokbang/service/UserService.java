@@ -1,8 +1,6 @@
 package chloe.godokbang.service;
 
-import chloe.godokbang.domain.User;
 import chloe.godokbang.dto.request.JoinRequest;
-import chloe.godokbang.dto.request.LoginRequest;
 import chloe.godokbang.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,21 +39,5 @@ public class UserService {
      */
     public void join(JoinRequest request) {
         userRepository.save(request.toEntity(encoder.encode(request.getPassword())));
-    }
-
-    /**
-     * 로그인
-     * @param request 로그인 request dto
-     * @return User; email이 존재하지 않거나 password가 일치하지 않는 경우, null
-     */
-    public User login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail()).get();
-        String encodedPassword = (user == null) ? "" : user.getPasswordHash();
-
-        if (user == null || encoder.matches(request.getPassword(), encodedPassword)) {
-            return null;
-        }
-
-        return user;
     }
 }
