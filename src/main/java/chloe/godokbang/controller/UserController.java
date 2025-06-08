@@ -22,7 +22,7 @@ public class UserController {
     @GetMapping("/join")
     public String getJoinPage(Model model) {
         model.addAttribute("joinRequest", new JoinRequest());
-        return "join";
+        return "pages/join";
     }
 
     @PostMapping("/join")
@@ -43,7 +43,7 @@ public class UserController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "join";
+            return "pages/join";
         }
 
         userService.join(request);
