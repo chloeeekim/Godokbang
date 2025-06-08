@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/homeLayout}"
+      layout:fragment="content">
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+<div class="center-container">
+    <div class="stroke-box">
+        <div class="title-home">
+            <p class="text-primary">Let's Get Started!</p>
+            <p class="text-secondary">Log in or Sign up your account</p>
+        </div>
+        <div class="btns-home">
+            <button class="btn-primary btn-home" th:onclick="|location.href='@{/login}'|">Log in</button>
+            <div class="border">OR</div>
+            <button class="btn-secondary btn-home" th:onclick="|location.href='@{/join}'|">Sign up</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

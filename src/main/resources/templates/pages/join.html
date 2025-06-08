@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/homeLayout}"
+      layout:fragment="content">
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+<div class="center-container">
+    <div class="stroke-box">
+        <div class="title-home">
+            <p class="text-primary">Let's Get Started!</p>
+            <p class="text-secondary">Sign up your account</p>
+        </div>
+        <form class="join-form" th:method="post" th:action="@{/join}" th:object="${joinRequest}">
+            <div class="inputs-home">
+                <div>
+                    <div class="wrap-input">
+                        <label class="label-input" th:for="email">email</label>
+                        <input class="input-text" type="text" th:field="*{email}" th:errorclass="error-input"/>
+                    </div>
+                    <div class="error-msg" th:errors="*{email}"></div>
+                </div>
+                <div>
+                    <div class="wrap-input">
+                        <label class="label-input" th:for="password">password</label>
+                        <input class="input-text" type="password" th:field="*{password}" th:errorclass="error-input"/>
+                    </div>
+                    <div class="error-msg" th:errors="*{password}"></div>
+                </div>
+                <div>
+                    <div class="wrap-input">
+                        <label class="label-input" th:for="passwordCheck">confirm password</label>
+                        <input class="input-text" type="password" th:field="*{passwordCheck}"
+                               th:errorclass="error-input"/>
+                    </div>
+                    <div class="error-msg" th:errors="*{passwordCheck}"></div>
+                </div>
+                <div>
+                    <div class="wrap-input">
+                        <label class="label-input" th:for="nickname">nickname</label>
+                        <input class="input-text" type="text" th:field="*{nickname}" th:errorclass="error-input"/>
+                    </div>
+                    <div class="error-msg" th:errors="*{nickname}"></div>
+                </div>
+            </div>
+            <button type="submit" class="btn-primary btn-home">Sign up</button>
+        </form>
+        <div class="align-center">
+            <p class="text-minor">Already have an account? <a th:onclick="|location.href='@{/login}'|">Log in</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

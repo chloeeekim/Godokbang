@@ -1,0 +1,64 @@
+.stroke-box {
+    border: 1px solid var(--light-gray-color);
+    border-radius: 16px;
+    padding: 30px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+}
+.btn-home {
+    width: 440px;
+    height: 52px;
+}
+.border {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: var(--light-gray-color);
+    font-size: 12px;
+    margin: 8px 0px;
+}
+.border::before {
+    content: "";
+    flex-grow: 1;
+    margin-right: 12px;
+    background: var(--light-gray-color);
+    height: 1px;
+    font-size: 0px;
+    line-heght: 0px;
+}
+.border::after {
+    content: "";
+    flex-grow: 1;
+    margin-left: 12px;
+    background: var(--light-gray-color);
+    height: 1px;
+    font-size: 0px;
+    line-heght: 0px;
+}
+.title-home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0px;
+}
+.btns-home {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: stretch;
+}
+.join-form, .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-self: stretch;
+}
+.inputs-home {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: stretch;
+}
