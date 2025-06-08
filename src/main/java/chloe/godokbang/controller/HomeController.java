@@ -21,6 +21,6 @@ public class HomeController {
             model.addAttribute("nickname", userDetails.getUser().getNickname());
         }
 
-        return "home";
+        return "pages/home";
     }
 }
