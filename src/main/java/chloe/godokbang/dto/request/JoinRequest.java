@@ -11,17 +11,17 @@ import lombok.*;
 @NoArgsConstructor
 public class JoinRequest {
 
-    @NotBlank(message = "이메일이 입력되지 않았습니다.")
-    @Email(message = "이메일 형식에 맞지 않습니다.")
+    @NotBlank(message = "Email is required.")
+    @Email(message = "Email has to be an email address.")
     private String email;
 
-    @NotBlank(message = "비밀번호가 입력되지 않았습니다.")
+    @NotBlank(message = "Password is required.")
     private String password;
 
-    @NotBlank(message = "비밀번호 확인이 입력되지 않았습니다.")
+    @NotBlank(message = "Password confirm is required.")
     private String passwordCheck;
 
-    @NotBlank(message = "닉네임이 입력되지 않았습니다.")
+    @NotBlank(message = "Nickname is required.")
     private String nickname;
 
     @Builder

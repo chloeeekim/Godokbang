@@ -29,17 +29,17 @@ public class UserController {
     public String join(@Valid @ModelAttribute JoinRequest request, BindingResult bindingResult) {
         // email 중복 체크
         if (userService.checkLoginIdExists(request.getEmail())) {
-            bindingResult.addError(new FieldError("joinRequest", "email", "이메일이 중복됩니다."));
+            bindingResult.addError(new FieldError("joinRequest", "email", "Your email is already taken."));
         }
 
         // nickname 중복 체크
         if (userService.checkNicknameExists(request.getNickname())) {
-            bindingResult.addError(new FieldError("joinRequest", "nickname", "닉네임이 중복됩니다."));
+            bindingResult.addError(new FieldError("joinRequest", "nickname", "Your nickname is already taken."));
         }
 
         // password가 passwordCheck와 동일한지 확인
         if (!request.getPassword().equals(request.getPasswordCheck())) {
-            bindingResult.addError(new FieldError("joinRequest", "passwordCheck", "비밀번호 확인이 일치하지 않습니다."));
+            bindingResult.addError(new FieldError("joinRequest", "passwordCheck", "Passwords do not match."));
         }
 
         if (bindingResult.hasErrors()) {
