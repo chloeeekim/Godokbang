@@ -26,7 +26,7 @@ public class UserController {
     public String getHomePage(@AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails != null) {
             // TODO 로그인 되어 있는 경우 home 화면으로 이동
-            return "home";
+            return "pages/home/home";
         }
 
         return "pages/sign/welcome";
