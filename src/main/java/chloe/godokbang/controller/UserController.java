@@ -3,6 +3,7 @@ package chloe.godokbang.controller;
 import chloe.godokbang.dto.request.JoinRequest;
 import chloe.godokbang.dto.request.LoginRequest;
 import chloe.godokbang.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,7 @@ public class UserController {
     @GetMapping("/join")
     public String getJoinPage(Model model) {
         model.addAttribute("joinRequest", new JoinRequest());
-        return "pages/join";
+        return "pages/sign/join";
     }
 
     @PostMapping("/join")
@@ -43,7 +44,7 @@ public class UserController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "pages/join";
+            return "pages/sign/join";
         }
 
         userService.join(request);
@@ -53,6 +54,14 @@ public class UserController {
     @GetMapping("/login")
     public String getLoginPage(Model model) {
         model.addAttribute("loginRequest", new LoginRequest());
-        return "login";
+        return "pages/sign/login";
+    }
+
+    @PostMapping("/login-error")
+    public String loginError(HttpServletRequest request, Model model) {
+        String email = request.getParameter("email");
+        model.addAttribute("loginRequest", new LoginRequest(email, "")); // 비밀번호는 빈 값
+        model.addAttribute("loginError", "Invalid email or password.");
+        return "pages/sign/login";
     }
 }

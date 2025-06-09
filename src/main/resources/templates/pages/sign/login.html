@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/homeLayout}"
+      layout:fragment="content">
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+<div class="center-container">
+    <div class="stroke-box">
+        <div class="title-home">
+            <p class="text-primary">Let's Get Started!</p>
+            <p class="text-secondary">Log in your account</p>
+        </div>
+        <form class="login-form" th:method="post" th:action="@{/login}" th:object="${loginRequest}">
+            <div class="inputs-home">
+                <div class="wrap-input">
+                    <label class="label-input" th:for="email">email</label>
+                    <input class="input-text" type="text" th:field="*{email}" />
+                </div>
+                <div class="wrap-input">
+                    <label class="label-input" th:for="password">password</label>
+                    <input class="input-text" type="password" th:field="*{password}" />
+                </div>
+            </div>
+            <div th:if="${loginError}">
+                <div class="error-box">
+                    <p class="error-msg" th:text="${loginError}"></p>
+                </div>
+            </div>
+            <button type="submit" class="btn-primary btn-home">Log in</button>
+        </form>
+        <div class="align-center">
+            <p class="text-minor">Don't have a account yet? <a th:onclick="|location.href='@{/join}'|">Sign up</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

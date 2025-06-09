@@ -21,7 +21,7 @@ public class SecurityConfig {
        http
                .csrf(AbstractHttpConfigurer::disable)
                .authorizeHttpRequests(auth -> auth
-                       .requestMatchers("/", "/login", "/join", "/home", "/css/**").permitAll()
+                       .requestMatchers("/", "/login", "/join", "/login-error", "/css/**").permitAll()
                        .anyRequest().authenticated()
                )
                .formLogin(form -> form
@@ -29,12 +29,12 @@ public class SecurityConfig {
                        .loginProcessingUrl("/login")
                        .usernameParameter("email")
                        .defaultSuccessUrl("/home", true)
-                       .failureUrl("/login?error=true")
+                       .failureForwardUrl("/login-error")
                        .permitAll()
                )
                .logout(logout -> logout
                        .logoutUrl("/logout")
-                       .logoutSuccessUrl("/home?logout=true")
+                       .logoutSuccessUrl("/welcome")
                        .invalidateHttpSession(true)
                        .deleteCookies("JSESSIONID")
                        .permitAll()

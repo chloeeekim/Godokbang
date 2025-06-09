@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
 
-    @GetMapping(value = {"", "/", "/home"})
+    @GetMapping(value = {"", "/"})
     public String getHomePage(@RequestParam(value = "logout", required = false) String logout,
             Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         if (logout != null) {
@@ -21,6 +21,6 @@ public class HomeController {
             model.addAttribute("nickname", userDetails.getUser().getNickname());
         }
 
-        return "pages/home";
+        return "pages/sign/welcome";
     }
 }
