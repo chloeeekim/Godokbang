@@ -1,11 +1,13 @@
 package chloe.godokbang.controller;
 
+import chloe.godokbang.auth.CustomUserDetails;
 import chloe.godokbang.dto.request.JoinRequest;
 import chloe.godokbang.dto.request.LoginRequest;
 import chloe.godokbang.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +21,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping(value = {"", "/"})
+    public String getHomePage(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails != null) {
+            // TODO 로그인 되어 있는 경우 home 화면으로 이동
+            return "home";
+        }
+
+        return "pages/sign/welcome";
+    }
 
     @GetMapping("/join")
     public String getJoinPage(Model model) {
