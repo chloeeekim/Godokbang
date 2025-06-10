@@ -26,6 +26,7 @@ public class ChatRoomService {
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .userCount(1)
+                .maxUser(request.getMaxUser())
                 .owner(owner)
                 .build();
         return chatRoomRepository.save(chatRoom);

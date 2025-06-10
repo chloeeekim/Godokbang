@@ -3,10 +3,7 @@ package chloe.godokbang.dto.request;
 import chloe.godokbang.domain.ChatRoom;
 import chloe.godokbang.domain.User;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
