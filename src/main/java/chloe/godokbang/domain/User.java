@@ -4,6 +4,8 @@ import chloe.godokbang.domain.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @ToString
@@ -31,9 +33,12 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private UserRole role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatRoomUser> chatRooms = new ArrayList<>();
+
     @Builder
-    public User(String loginId, String passwordHash, String nickname, UserRole role) {
-        this.email = loginId;
+    public User(String email, String passwordHash, String nickname, UserRole role) {
+        this.email = email;
         this.passwordHash = passwordHash;
         this.nickname = nickname;
         this.role = role == null ? UserRole.USER : role;

@@ -1,9 +1,11 @@
 package chloe.godokbang.dto.request;
 
 import chloe.godokbang.domain.ChatRoom;
-import chloe.godokbang.domain.User;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -24,12 +26,11 @@ public class CreateChatRoomRequest {
         this.maxUser = maxUser;
     }
 
-    public ChatRoom toEntity(User user) {
+    public ChatRoom toEntity() {
         return ChatRoom.builder()
                 .title(title)
                 .description(description)
                 .maxUser(maxUser)
-                .owner(user)
                 .build();
     }
 }

@@ -27,20 +27,15 @@ public class ChatRoom extends BaseEntity {
 
     private int userCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
-    private User owner;
-
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatRoomUser> users = new ArrayList<>();
 
     @Builder
-    public ChatRoom(String title, String description, int maxUser, int userCount, User owner) {
+    public ChatRoom(String title, String description, int maxUser, int userCount) {
         this.title = title;
         this.description = description;
         this.maxUser = maxUser;
         this.userCount = userCount;
-        this.owner = owner;
     }
 
     public void incrementUserCount() {

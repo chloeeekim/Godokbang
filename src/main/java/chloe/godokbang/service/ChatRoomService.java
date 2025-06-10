@@ -1,7 +1,9 @@
 package chloe.godokbang.service;
 
 import chloe.godokbang.domain.ChatRoom;
+import chloe.godokbang.domain.ChatRoomUser;
 import chloe.godokbang.domain.User;
+import chloe.godokbang.domain.enums.ChatRoomRole;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
 import chloe.godokbang.repository.ChatRoomRepository;
 import chloe.godokbang.repository.ChatRoomUserRepository;
@@ -27,9 +29,11 @@ public class ChatRoomService {
                 .description(request.getDescription())
                 .userCount(1)
                 .maxUser(request.getMaxUser())
-                .owner(owner)
                 .build();
-        return chatRoomRepository.save(chatRoom);
+        chatRoomRepository.save(chatRoom);
+        chatRoomUserRepository.save(new ChatRoomUser(chatRoom, owner, ChatRoomRole.OWNER));
+
+        return chatRoom;
     }
 
     public List<ChatRoom> getAllChatRoomsList() {

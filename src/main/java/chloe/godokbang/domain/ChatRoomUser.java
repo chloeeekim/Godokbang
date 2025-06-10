@@ -1,5 +1,6 @@
 package chloe.godokbang.domain;
 
+import chloe.godokbang.domain.enums.ChatRoomRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,12 +24,17 @@ public class ChatRoomUser {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ChatRoomRole role;
+
     private LocalDateTime joinedAt;
 
     @Builder
-    public ChatRoomUser(ChatRoom chatRoom, User user) {
+    public ChatRoomUser(ChatRoom chatRoom, User user, ChatRoomRole role) {
         this.chatRoom = chatRoom;
         this.user = user;
+        this.role = role;
         this.joinedAt = LocalDateTime.now();
     }
 }
