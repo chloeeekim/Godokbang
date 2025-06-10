@@ -23,6 +23,7 @@ button {
     font-size: 16px;
     text-align: center;
     cursor: pointer;
+    font-weight: 600;
     &.btn-primary {
         background: var(--primary-color);
         color: white;
@@ -76,12 +77,12 @@ a {
     align-items: center;
     flex-direction: column;
 }
-.wrap-input {
+.wrap-input, .wrap-select {
     width: 100%;
     border: 1px solid var(--light-gray-color);
     border-radius: 8px;
 }
-.label-input {
+.label-input, .label-select {
     font-size: 10px;
     color: var(--light-gray-color);
     line-height: 1.2;
@@ -107,6 +108,10 @@ input.input-text {
 textarea.input-text {
     height: 120px;
 }
+select.input-text {
+    height: 36px;
+    appearance: none;
+}
 .error-msg {
     font-size: 12px;
     color: var(--danger-color);
@@ -129,5 +134,15 @@ textarea.input-text {
     display: flex;
 }
 .content {
-    padding-left: 320px;
+    padding: 20px 20px 20px 320px;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+tr {
+    border-bottom: 1px solid var(--light-gray-color);
+    &:last-child {
+        border-bottom: none;
+    }
 }

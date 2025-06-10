@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="menus">
-            <div th:class="${chatSelected}? 'menu menu-selected' : 'menu'">
+            <div th:class="${chatSelected}? 'menu menu-selected' : 'menu'" th:onclick="|location.href='@{/chat/rooms}'|">
                 <div class="menu-left">
                     <div class="material-icons-outlined">chat</div>
                     <p class="menu-title">Chat</p>

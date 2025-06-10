@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/contentLayout}"
+      layout:fragment="content">
+<div>
+    <div class="content-top">
+        <form th:method="get" th:action="@{/chat/rooms}">
+            <div class="search-bar">
+                <div class="material-icons-outlined" style="padding: 8px; color: var(--light-gray-color);">search</div>
+                <input class="search-input" type="text" name="keyword" th:value="${keyword}">
+                <button type="submit" class="btn-search">Search</button>
+            </div>
+        </form>
+    </div>
+    <div th:if="${#lists.isEmpty(rooms)}" class="empty-content">
+        <p class="text-primary">Nothing found.</p>
+        <p class="text-secondary">Get started by creating a chat room.</p>
+        <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/room/new}'|">
+            Create new room
+        </button>
+    </div>
+    <div th:unless="${#lists.isEmpty(rooms)}" class="content-main">
+        <table>
+            <tbody>
+            <tr th:each="row : ${rooms}">
+                <td>
+                    <div class="wrap-list">
+                        <p class="list-title" th:text="${row.title}"></p>
+                        <p class="list-description" th:text="${row.description}"></p>
+                        <div class="list-user-count">
+                            <div class="material-icons-outlined"
+                                 style="font-size: 20px; color: var(--medium-gray-color);">
+                                group
+                            </div>
+                            <p>[[${row.userCount}]] / [[${row.maxUser}]]</p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="right-side">
+            <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/room/new}'|">
+                Create new room
+            </button>
+        </div>
+    </div>
+</div>
+</html>

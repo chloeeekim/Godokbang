@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/contentLayout}"
+      layout:fragment="content">
+<div>
+    <div class="title-form">
+        <p class="text-primary">Create new room</p>
+    </div>
+    <form class="create-form" th:method="post" th:action="@{/chat/room/new}" th:object="${createChatRoomRequest}">
+        <div class="inputs-form">
+            <div>
+                <div class="wrap-input">
+                    <label class="label-input" th:for="title">title</label>
+                    <input class="input-text" type="text" th:field="*{title}" th:errorclass="error-input"/>
+                </div>
+                <div class="error-msg" th:errors="*{title}"></div>
+            </div>
+            <div>
+                <div class="wrap-input">
+                    <label class="label-input" th:for="description">description</label>
+                    <textarea class="input-text" th:field="*{description}"></textarea>
+                </div>
+            </div>
+            <div>
+                <div class="wrap-select">
+                    <label class="label-select" th:for="maxUser">maximum number of people</label>
+                    <select class="input-text" th:field="*{maxUser}">
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="btns-form">
+            <button type="submit" class="btn-primary btn-form">Create</button>
+            <button type="button" class="btn-secondary btn-form" th:onclick="|location.href='@{/chat/rooms}'|">Cancel</button>
+        </div>
+    </form>
+</div>
+</html>
