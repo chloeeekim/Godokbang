@@ -1,6 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <div th:fragment="navbarFragment">
-    navbar 영역입니다.
+    <nav>
+        <div class="menus">
+            <div th:class="${homeSelected}? 'menu menu-selected' : 'menu'" th:onclick="|location.href='@{/home}'|">
+                <div class="menu-left">
+                    <div class="material-icons-outlined">home</div>
+                    <p class="menu-title">Home</p>
+                </div>
+                <div class="menu-right">
+                    <div th:if="${notiHome}" class="material-icons" style="color: var(--danger-color); font-size: 8px;">
+                        fiber_manual_record
+                    </div>
+                    <div class="material-icons-outlined">chevron_right</div>
+                </div>
+            </div>
+        </div>
+        <div class="menus">
+            <div th:class="${chatSelected}? 'menu menu-selected' : 'menu'">
+                <div class="menu-left">
+                    <div class="material-icons-outlined">chat</div>
+                    <p class="menu-title">Chat</p>
+                </div>
+                <div class="menu-right">
+                    <div th:if="${notiChat}" class="material-icons" style="color: var(--danger-color); font-size: 8px;">
+                        fiber_manual_record
+                    </div>
+                    <div class="material-icons-outlined">chevron_right</div>
+                </div>
+            </div>
+            <div th:class="${notiSelected}? 'menu menu-selected' : 'menu'">
+                <div class="menu-left">
+                    <div class="material-icons-outlined">notifications</div>
+                    <p class="menu-title">Notification</p>
+                </div>
+                <div class="menu-right">
+                    <div th:if="${notiNotification}" class="material-icons"
+                         style="color: var(--danger-color); font-size: 8px;">
+                        fiber_manual_record
+                    </div>
+                    <div class="material-icons-outlined">chevron_right</div>
+                </div>
+            </div>
+        </div>
+        <div class="menus">
+            <div th:class="${accountSelected}? 'menu menu-selected' : 'menu'">
+                <div class="menu-left">
+                    <div class="material-icons-outlined">account_circle</div>
+                    <p class="menu-title">Account</p>
+                </div>
+                <div class="menu-right">
+                    <div th:if="${notiAccount}" class="material-icons"
+                         style="color: var(--danger-color); font-size: 8px;">
+                        fiber_manual_record
+                    </div>
+                    <div class="material-icons-outlined">chevron_right</div>
+                </div>
+            </div>
+            <div th:class="${settingsSelected}? 'menu menu-selected' : 'menu'">
+                <div class="menu-left">
+                    <div class="material-icons-outlined">settings</div>
+                    <p class="menu-title">Settings</p>
+                </div>
+                <div class="menu-right">
+                    <div th:if="${notiSettings}" class="material-icons"
+                         style="color: var(--danger-color); font-size: 8px;">
+                        fiber_manual_record
+                    </div>
+                    <div class="material-icons-outlined">chevron_right</div>
+                </div>
+            </div>
+            <div class="menu" th:onclick="|location.href='@{/logout}'|">
+                <div class="menu-left">
+                    <div class="material-icons-outlined">logout</div>
+                    <p class="menu-title">Log out</p>
+                </div>
+                <div class="menu-right">
+                    <div class="material-icons-outlined">chevron_right</div>
+                </div>
+            </div>
+        </div>
+    </nav>
 </div>
 </html>

@@ -1,4 +1,4 @@
-html {
+* {
     font-family: "Noto Sans KR", "Noto Sans", sans-serif;
 }
 html, body {
@@ -18,7 +18,7 @@ html, body {
 }
 button {
     border-radius: 8px;
-    padding: 16px;
+    padding: 12px;
     display: block;
     font-size: 16px;
     text-align: center;
@@ -119,9 +119,15 @@ textarea.input-text {
     color: var(--danger-color);
 }
 .align-center {
-     width: 100%;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     flex-direction: column;
- }
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.display-flex {
+    display: flex;
+}
+.content {
+    padding-left: 320px;
+}

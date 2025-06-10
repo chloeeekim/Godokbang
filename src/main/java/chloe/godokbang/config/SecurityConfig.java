@@ -22,6 +22,7 @@ public class SecurityConfig {
                .csrf(AbstractHttpConfigurer::disable)
                .authorizeHttpRequests(auth -> auth
                        .requestMatchers("/", "/login", "/join", "/login-error", "/css/**").permitAll()
+                       .requestMatchers("/home").permitAll() // 테스트용
                        .anyRequest().authenticated()
                )
                .formLogin(form -> form
@@ -34,7 +35,7 @@ public class SecurityConfig {
                )
                .logout(logout -> logout
                        .logoutUrl("/logout")
-                       .logoutSuccessUrl("/welcome")
+                       .logoutSuccessUrl("/")
                        .invalidateHttpSession(true)
                        .deleteCookies("JSESSIONID")
                        .permitAll()
