@@ -6,7 +6,7 @@
       layout:fragment="content">
 <div>
     <div class="content-top">
-        <form th:method="get" th:action="@{/chat/rooms}">
+        <form th:method="get" th:action="@{/chat/discover}">
             <div class="search-bar">
                 <div class="material-icons-outlined" style="padding: 8px; color: var(--light-gray-color);">search</div>
                 <input class="search-input" type="text" name="keyword" th:value="${keyword}">
@@ -41,10 +41,44 @@
             </tr>
             </tbody>
         </table>
-        <div class="right-side">
-            <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/room/new}'|">
-                Create new room
-            </button>
+        <div class="content-bottom">
+            <div class="pagination" th:with="
+            pageNumber = ${rooms.pageable.pageNumber},
+            pageSize = ${rooms.pageable.pageSize},
+            totalPages = ${rooms.totalPages},
+            startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
+            tempEndPage = ${startPage + pageSize - 1},
+            endPage = ${tempEndPage < totalPages ? tempEndPage : totalPages},
+            keyword = ${keyword}">
+                <div th:if="${rooms.first}" class="page-item disabled">
+                    <p>&lt;</p>
+                </div>
+                <div th:unless="${rooms.first}" class="page-item"
+                     th:onclick="|location.href='@{/chat/discover(page=${pageNumber - 1},keyword=${keyword})}'|">
+                    <p>&lt;</p>
+                </div>
+                <div th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                    <div th:if="${page == pageNumber + 1}" class="page-item selected">
+                        <p th:text="${page}"></p>
+                    </div>
+                    <div th:unless="${page == pageNumber + 1}" class="page-item"
+                         th:onclick="|location.href='@{/chat/discover(page=${page - 1},keyword=${keyword})}'|">
+                        <p th:text="${page}"></p>
+                    </div>
+                </div>
+                <div th:if="${rooms.last}" class="page-item disabled">
+                    <p>&gt;</p>
+                </div>
+                <div th:unless="${rooms.last}" class="page-item"
+                     th:onclick="|location.href='@{/chat/discover(page=${pageNumber + 1},keyword=${keyword})}'|">
+                    <p>&gt;</p>
+                </div>
+            </div>
+            <div class="right-side">
+                <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/room/new}'|">
+                    Create new room
+                </button>
+            </div>
         </div>
     </div>
 </div>

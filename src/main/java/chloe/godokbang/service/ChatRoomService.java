@@ -10,10 +10,10 @@ import chloe.godokbang.repository.ChatRoomRepository;
 import chloe.godokbang.repository.ChatRoomUserRepository;
 import chloe.godokbang.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -37,16 +37,14 @@ public class ChatRoomService {
         return chatRoom;
     }
 
-    public List<DiscoverListResponse> getAllChatRoomsList() {
-        return chatRoomRepository.findAll().stream()
-                .map(DiscoverListResponse::fromEntity)
-                .toList();
+    public Page<DiscoverListResponse> getAllChatRooms(Pageable pageable) {
+        return chatRoomRepository.findAll(pageable)
+                .map(DiscoverListResponse::fromEntity);
     }
 
-    public List<DiscoverListResponse> searchChatRooms(String keyword) {
-        return chatRoomRepository.findByTitleContainingIgnoreCase(keyword).stream()
-                .map(DiscoverListResponse::fromEntity)
-                .toList();
+    public Page<DiscoverListResponse> searchChatRooms(Pageable pageable, String keyword) {
+           return chatRoomRepository.findByTitleContainingIgnoreCase(pageable, keyword)
+                   .map(DiscoverListResponse::fromEntity);
     }
 
     public void joinRoom() {

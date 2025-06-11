@@ -3,7 +3,7 @@
 <div th:fragment="navbarFragment">
     <nav>
         <div class="menus">
-            <div th:class="${homeSelected}? 'menu menu-selected' : 'menu'" th:onclick="|location.href='@{/home}'|">
+            <div class="menu" th:classappend="${homeSelected}? 'menu-selected'" th:onclick="|location.href='@{/home}'|">
                 <div class="menu-left">
                     <div class="material-icons-outlined">home</div>
                     <p class="menu-title">Home</p>
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="menus">
-            <div th:class="${discoverSelected}? 'menu menu-selected' : 'menu'" th:onclick="|location.href='@{/chat/discover}'|">
+            <div class="menu" th:classappend="${discoverSelected}? 'menu-selected'" th:onclick="|location.href='@{/chat/discover}'|">
                 <div class="menu-left">
                     <div class="material-icons-outlined">explore</div>
                     <p class="menu-title">Discover</p>
@@ -29,7 +29,7 @@
                     <div class="material-icons-outlined">chevron_right</div>
                 </div>
             </div>
-            <div th:class="${chatSelected}? 'menu menu-selected' : 'menu'" th:onclick="|location.href='@{/chat/rooms}'|">
+            <div class="menu" th:classappend="${chatSelected}? 'menu-selected'" th:onclick="|location.href='@{/chat/rooms}'|">
                 <div class="menu-left">
                     <div class="material-icons-outlined">chat</div>
                     <p class="menu-title">Chat</p>
@@ -41,7 +41,7 @@
                     <div class="material-icons-outlined">chevron_right</div>
                 </div>
             </div>
-            <div th:class="${notiSelected}? 'menu menu-selected' : 'menu'">
+            <div class="menu" th:classappend="${notiSelected}? 'menu-selected'">
                 <div class="menu-left">
                     <div class="material-icons-outlined">notifications</div>
                     <p class="menu-title">Notification</p>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="menus">
-            <div th:class="${accountSelected}? 'menu menu-selected' : 'menu'">
+            <div class="menu" th:classappend="${accountSelected}? 'menu-selected'">
                 <div class="menu-left">
                     <div class="material-icons-outlined">account_circle</div>
                     <p class="menu-title">Account</p>
@@ -69,7 +69,7 @@
                     <div class="material-icons-outlined">chevron_right</div>
                 </div>
             </div>
-            <div th:class="${settingsSelected}? 'menu menu-selected' : 'menu'">
+            <div class="menu" th:classappend="${settingsSelected}? 'menu-selected'">
                 <div class="menu-left">
                     <div class="material-icons-outlined">settings</div>
                     <p class="menu-title">Settings</p>
