@@ -17,6 +17,18 @@
             </div>
         </div>
         <div class="menus">
+            <div th:class="${discoverSelected}? 'menu menu-selected' : 'menu'" th:onclick="|location.href='@{/chat/discover}'|">
+                <div class="menu-left">
+                    <div class="material-icons-outlined">explore</div>
+                    <p class="menu-title">Discover</p>
+                </div>
+                <div class="menu-right">
+                    <div th:if="${notiDiscover}" class="material-icons" style="color: var(--danger-color); font-size: 8px;">
+                        fiber_manual_record
+                    </div>
+                    <div class="material-icons-outlined">chevron_right</div>
+                </div>
+            </div>
             <div th:class="${chatSelected}? 'menu menu-selected' : 'menu'" th:onclick="|location.href='@{/chat/rooms}'|">
                 <div class="menu-left">
                     <div class="material-icons-outlined">chat</div>

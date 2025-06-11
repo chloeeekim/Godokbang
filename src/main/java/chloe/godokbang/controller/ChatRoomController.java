@@ -1,15 +1,15 @@
 package chloe.godokbang.controller;
 
 import chloe.godokbang.auth.CustomUserDetails;
-import chloe.godokbang.domain.ChatRoom;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
-import chloe.godokbang.dto.response.ChatRoomListResponse;
+import chloe.godokbang.dto.response.DiscoverListResponse;
 import chloe.godokbang.service.ChatRoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,22 +21,19 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
-    @GetMapping("/rooms")
+    @GetMapping("/discover")
     public String getChatRoomsPage(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        List<ChatRoom> rooms;
+        List<DiscoverListResponse> rooms;
         if (keyword != null && !keyword.isBlank()) {
             rooms = chatRoomService.searchChatRooms(keyword);
         } else {
             rooms = chatRoomService.getAllChatRoomsList();
         }
 
-        List<ChatRoomListResponse> list = rooms.stream()
-                .map(ChatRoomListResponse::fromEntity)
-                .toList();
-        model.addAttribute("rooms", list);
+        model.addAttribute("rooms", rooms);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("chatSelected", true);
-        return "pages/chat/rooms";
+        model.addAttribute("discoverSelected", true);
+        return "pages/chat/discover";
     }
 
     @GetMapping("/room/new")
@@ -46,9 +43,15 @@ public class ChatRoomController {
     }
 
     @PostMapping("/room/new")
-    public String createChatRoom(@Valid @ModelAttribute CreateChatRoomRequest request,
-                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public String createChatRoom(@Valid @ModelAttribute CreateChatRoomRequest request, BindingResult bindingResult,
+                                 @AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("createChatRoomRequest", request);
+            return "pages/chat/createRoom";
+        }
+
         chatRoomService.createChatRoom(request, userDetails.getUser());
+        // TODO 생성 시 바로 채팅방 화면으로
         return "redirect:/chat/rooms";
     }
 }

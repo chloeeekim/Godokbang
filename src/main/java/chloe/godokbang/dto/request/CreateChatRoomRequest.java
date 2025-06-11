@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateChatRoomRequest {
 
-    @NotBlank(message = "채팅방 이름이 입력되지 않았습니다.")
+    @NotBlank(message = "Title is required.")
     private String title;
 
     private String description;

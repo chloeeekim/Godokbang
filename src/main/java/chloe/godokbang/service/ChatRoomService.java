@@ -5,6 +5,7 @@ import chloe.godokbang.domain.ChatRoomUser;
 import chloe.godokbang.domain.User;
 import chloe.godokbang.domain.enums.ChatRoomRole;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
+import chloe.godokbang.dto.response.DiscoverListResponse;
 import chloe.godokbang.repository.ChatRoomRepository;
 import chloe.godokbang.repository.ChatRoomUserRepository;
 import chloe.godokbang.repository.UserRepository;
@@ -36,12 +37,16 @@ public class ChatRoomService {
         return chatRoom;
     }
 
-    public List<ChatRoom> getAllChatRoomsList() {
-        return chatRoomRepository.findAll();
+    public List<DiscoverListResponse> getAllChatRoomsList() {
+        return chatRoomRepository.findAll().stream()
+                .map(DiscoverListResponse::fromEntity)
+                .toList();
     }
 
-    public List<ChatRoom> searchChatRooms(String keyword) {
-        return chatRoomRepository.findByTitleContainingIgnoreCase(keyword);
+    public List<DiscoverListResponse> searchChatRooms(String keyword) {
+        return chatRoomRepository.findByTitleContainingIgnoreCase(keyword).stream()
+                .map(DiscoverListResponse::fromEntity)
+                .toList();
     }
 
     public void joinRoom() {

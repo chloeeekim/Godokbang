@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
-public class ChatRoomListResponse {
+public class DiscoverListResponse {
 
     private UUID id;
     private String title;
@@ -18,7 +18,7 @@ public class ChatRoomListResponse {
     private int maxUser;
 
     @Builder
-    public ChatRoomListResponse(UUID id, String title, String description, int userCount, int maxUser) {
+    public DiscoverListResponse(UUID id, String title, String description, int userCount, int maxUser) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -26,8 +26,8 @@ public class ChatRoomListResponse {
         this.maxUser = maxUser;
     }
 
-    public static ChatRoomListResponse fromEntity(ChatRoom chatRoom) {
-        return ChatRoomListResponse.builder()
+    public static DiscoverListResponse fromEntity(ChatRoom chatRoom) {
+        return DiscoverListResponse.builder()
                 .id(chatRoom.getId())
                 .title(chatRoom.getTitle())
                 .description(chatRoom.getDescription())
