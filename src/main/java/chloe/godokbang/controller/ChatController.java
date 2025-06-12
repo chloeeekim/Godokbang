@@ -2,7 +2,9 @@ package chloe.godokbang.controller;
 
 import chloe.godokbang.auth.CustomUserDetails;
 import chloe.godokbang.dto.request.ChatMessageRequest;
+import chloe.godokbang.dto.response.ChatMessageResponse;
 import chloe.godokbang.kafka.producer.KafkaChatProducer;
+import chloe.godokbang.service.ChatMessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -20,9 +23,12 @@ public class ChatController {
 
     private final ObjectMapper objectMapper;
     private final KafkaChatProducer kafkaChatProducer;
+    private final ChatMessageService chatMessageService;
 
     @GetMapping("/room/{id}")
     public String getChatRoomPage(Model model, @PathVariable(name = "id") UUID id) {
+        List<ChatMessageResponse> savedMessages = chatMessageService.getChatMessagesSaved(id);
+        model.addAttribute("messages", savedMessages);
         model.addAttribute("chatRoomId", id);
         return "pages/chat/chatRoom";
     }
