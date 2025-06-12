@@ -64,6 +64,9 @@
     &:hover {
         background: var(--lighter-gray-color);
     }
+    &:not(.discover) {
+        cursor: pointer;
+    }
 }
 .list-title {
     font-weight: 600;
