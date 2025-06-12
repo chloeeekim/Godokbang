@@ -24,8 +24,8 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     @GetMapping("/discover")
-    public String getChatRoomsPage(@PageableDefault(page = 0, size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-            @RequestParam(value = "keyword", required = false) String keyword, Model model) {
+    public String getDiscoverPage(@PageableDefault(page = 0, size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+                                  @RequestParam(value = "keyword", required = false) String keyword, Model model) {
         Page<DiscoverListResponse> rooms;
         if (keyword != null && !keyword.isBlank()) {
             rooms = chatRoomService.searchChatRooms(pageable, keyword);
