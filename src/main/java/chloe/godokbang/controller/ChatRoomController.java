@@ -53,8 +53,7 @@ public class ChatRoomController {
             return "pages/chat/createRoom";
         }
 
-        chatRoomService.createChatRoom(request, userDetails.getUser());
-        // TODO 생성 시 바로 채팅방 화면으로
-        return "redirect:/chat/rooms";
+        UUID roomId = chatRoomService.createChatRoom(request, userDetails.getUser());
+        return "redirect:/chat/room/" + roomId;
     }
 }

@@ -24,7 +24,7 @@ public class ChatRoomService {
     private final UserRepository userRepository;
     private final ChatRoomUserRepository chatRoomUserRepository;
 
-    public ChatRoom createChatRoom(CreateChatRoomRequest request, User owner) {
+    public UUID createChatRoom(CreateChatRoomRequest request, User owner) {
         ChatRoom chatRoom = ChatRoom.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
@@ -34,7 +34,7 @@ public class ChatRoomService {
         chatRoomRepository.save(chatRoom);
         chatRoomUserRepository.save(new ChatRoomUser(chatRoom, owner, ChatRoomRole.OWNER));
 
-        return chatRoom;
+        return chatRoom.getId();
     }
 
     public Page<DiscoverListResponse> getAllChatRooms(Pageable pageable) {
