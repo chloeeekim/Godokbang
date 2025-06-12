@@ -41,14 +41,22 @@ public class ChatRoomService {
         return chatRoom.getId();
     }
 
-    public Page<DiscoverListResponse> getAllChatRooms(Pageable pageable) {
-        return chatRoomRepository.findAll(pageable)
-                .map(DiscoverListResponse::fromEntity);
+    public Page<DiscoverListResponse> getAllChatRooms(Pageable pageable, UUID userId) {
+        Page<ChatRoom> all = chatRoomRepository.findAll(pageable);
+        List<UUID> joined = chatRoomUserRepository.findChatRoomIdsByUserId(userId);
+
+        return all.map(room -> {
+            return DiscoverListResponse.fromEntity(room, joined.contains(room.getId()));
+        });
     }
 
-    public Page<DiscoverListResponse> searchChatRooms(Pageable pageable, String keyword) {
-        return chatRoomRepository.findByTitleContainingIgnoreCase(pageable, keyword)
-                .map(DiscoverListResponse::fromEntity);
+    public Page<DiscoverListResponse> searchChatRooms(Pageable pageable, String keyword, UUID userId) {
+        Page<ChatRoom> rooms = chatRoomRepository.findByTitleContainingIgnoreCase(pageable, keyword);
+        List<UUID> joined = chatRoomUserRepository.findChatRoomIdsByUserId(userId);
+
+        return rooms.map(room -> {
+            return DiscoverListResponse.fromEntity(room, joined.contains(room.getId()));
+        });
     }
 
     public void joinRoom(UUID chatRoomId, User user) {

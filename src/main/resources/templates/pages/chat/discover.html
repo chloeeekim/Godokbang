@@ -36,7 +36,8 @@
                             </div>
                             <p th:text="${row.userCount} + ' / ' + ${row.maxUser}"></p>
                         </div>
-                        <button type="button" th:data-id="${row.id}" th:onclick="joinRoom(this)">Join</button>
+                        <button th:unless="${row.joined}" type="button" th:data-id="${row.id}" th:onclick="joinRoom(this)">Join</button>
+                        <button th:if="${row.joined}" type="button" th:data-id="${row.id}" th:onclick="|location.href='@{/chat/room/{id}(id=@{row.id})}'|">Open</button>
                     </div>
                 </td>
             </tr>
