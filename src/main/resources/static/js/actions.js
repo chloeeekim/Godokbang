@@ -23,17 +23,44 @@ function joinRoom(button) {
     });
 }
 
-function connect() {
+function connect(onConnected) {
     const socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/topic/chatroom.' + roomId, function (messageOutput) {
             const msg = JSON.parse(messageOutput.body);
-            const chatBox = document.getElementById('chat-box');
-            const line = document.createElement('div');
-            line.innerText = `[${msg.senderNickname}] ${msg.message}`;
-            chatBox.appendChild(line);
+            addMessage(msg);
         });
+
+        if (typeof onConnected == 'function') {
+            onConnected();
+        }
+    });
+}
+
+function addMessage(msg) {
+    const chatBox = document.getElementById('chat-box');
+    const line = document.createElement('div');
+    if (msg.type == 'ENTER' || msg.type == 'LEAVE' || msg.type == 'CREATE') {
+        line.innerText = `${msg.message}`;
+        line.classList.add('system-message');
+    } else {
+        line.innerText = `${msg.senderNickname} : ${msg.message}`;
+    }
+    chatBox.appendChild(line);
+}
+
+function getPreviousMessages() {
+    fetch(`/chat/${roomId}/message`, {
+        method: 'GET'
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+            data.forEach(message => {
+                addMessage(message);
+            });
+        }
     });
 }

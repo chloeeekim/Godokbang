@@ -27,10 +27,14 @@ public class ChatController {
 
     @GetMapping("/room/{id}")
     public String getChatRoomPage(Model model, @PathVariable(name = "id") UUID id) {
-        List<ChatMessageResponse> savedMessages = chatMessageService.getChatMessagesSaved(id);
-        model.addAttribute("messages", savedMessages);
         model.addAttribute("chatRoomId", id);
         return "pages/chat/chatRoom";
+    }
+
+    @GetMapping("/{id}/message")
+    @ResponseBody
+    public List<ChatMessageResponse> getPreviousMessages(@PathVariable(name = "id") UUID id) {
+        return chatMessageService.getChatMessagesSaved(id);
     }
 
     @PostMapping("/message")

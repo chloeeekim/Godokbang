@@ -41,6 +41,8 @@ public class KafkaChatConsumer {
             ChatMessage message = request.toEntity(chatRoom, sender);
             chatMessageRepository.save(message);
 
+            System.out.println("message : " + message.getMessage() + " / type : " + message.getType().toString());
+
             messagingTemplate.convertAndSend("/topic/chatroom." + request.getRoomId(), ChatMessageResponse.fromEntity(message));
         } catch (Exception e) {
             log.error("Failed to consume chat message", e);

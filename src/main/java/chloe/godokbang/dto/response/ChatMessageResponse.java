@@ -7,18 +7,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 public class ChatMessageResponse {
 
+    private UUID roomId;
     private String senderNickname;
     private String message;
     private MessageType type;
     private LocalDateTime sentAt;
 
     @Builder
-    public ChatMessageResponse(String senderNickname, String message, MessageType type, LocalDateTime sentAt) {
+    public ChatMessageResponse(UUID roomId, String senderNickname, String message, MessageType type, LocalDateTime sentAt) {
+        this.roomId = roomId;
         this.senderNickname = senderNickname;
         this.message = message;
         this.type = type;
@@ -27,6 +30,7 @@ public class ChatMessageResponse {
 
     public static ChatMessageResponse fromEntity(ChatMessage chatMessage) {
         return ChatMessageResponse.builder()
+                .roomId(chatMessage.getChatRoom().getId())
                 .senderNickname(chatMessage.getSender().getNickname())
                 .message(chatMessage.getMessage())
                 .type(chatMessage.getType())
