@@ -5,10 +5,13 @@
       layout:decorate="~{layouts/contentLayout}"
       layout:fragment="content">
 <div>
+    <div id="chat-box"></div>
     <input id="chat-input">
     <button type="button" th:onclick="sendMessage()">Send</button>
 </div>
 <script th:inline="javascript">
     const roomId = [[${chatRoomId}]];
+    let stompClinet = null;
+    connect();
 </script>
 </html>

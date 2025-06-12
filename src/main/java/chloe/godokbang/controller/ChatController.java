@@ -31,7 +31,6 @@ public class ChatController {
     @ResponseBody
     public void sendMessage(@RequestBody ChatMessageRequest request, @AuthenticationPrincipal CustomUserDetails userDetails)
             throws JsonProcessingException {
-        System.out.println("request: " + request.getMessage() + " / " + request.getRoomId());
         request.setUserEmail(userDetails.getUsername());
         String jsonMessage = objectMapper.writeValueAsString(request);
         kafkaChatProducer.sendMessage("chat", jsonMessage);

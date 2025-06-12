@@ -22,3 +22,18 @@ function joinRoom(button) {
         }
     });
 }
+
+function connect() {
+    const socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe('/topic/chatroom.' + roomId, function (messageOutput) {
+            const msg = JSON.parse(messageOutput.body);
+            const chatBox = document.getElementById('chat-box');
+            const line = document.createElement('div');
+            line.innerText = `[${msg.senderNickname}] ${msg.message}`;
+            chatBox.appendChild(line);
+        });
+    });
+}
