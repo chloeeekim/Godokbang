@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/contentLayout}"
+      layout:fragment="content">
+<div>
+    <input id="chat-input">
+    <button type="button" th:onclick="sendMessage()">Send</button>
+</div>
+<script th:inline="javascript">
+    const roomId = [[${chatRoomId}]];
+</script>
+</html>
