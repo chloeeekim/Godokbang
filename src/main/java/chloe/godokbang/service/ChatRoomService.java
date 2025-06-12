@@ -1,5 +1,6 @@
 package chloe.godokbang.service;
 
+import chloe.godokbang.domain.ChatMessage;
 import chloe.godokbang.domain.ChatRoom;
 import chloe.godokbang.domain.ChatRoomUser;
 import chloe.godokbang.domain.User;
@@ -7,6 +8,7 @@ import chloe.godokbang.domain.enums.ChatRoomRole;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
 import chloe.godokbang.dto.response.ChatRoomListResponse;
 import chloe.godokbang.dto.response.DiscoverListResponse;
+import chloe.godokbang.repository.ChatMessageRepository;
 import chloe.godokbang.repository.ChatRoomRepository;
 import chloe.godokbang.repository.ChatRoomUserRepository;
 import chloe.godokbang.repository.UserRepository;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,6 +30,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
     private final ChatRoomUserRepository chatRoomUserRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     public UUID createChatRoom(CreateChatRoomRequest request, User owner) {
         ChatRoom chatRoom = ChatRoom.builder()
@@ -74,7 +78,10 @@ public class ChatRoomService {
         User user = userRepository.findById(userId).get();
         return user.getChatRooms().stream()
                 .map(ChatRoomUser::getChatRoom)
-                .map(ChatRoomListResponse::fromEntity)
+                .map(chatRoom -> {
+                    Optional<ChatMessage> latest = chatMessageRepository.findLatestMessage(chatRoom.getId());
+                    return ChatRoomListResponse.fromEntity(chatRoom, latest.isEmpty() ? "" : latest.get().getMessage());
+                })
                 .toList();
     }
 }

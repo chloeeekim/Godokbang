@@ -24,10 +24,11 @@ public class ChatRoomListResponse {
         this.unread = unread;
     }
 
-    public static ChatRoomListResponse fromEntity(ChatRoom chatRoom) {
+    public static ChatRoomListResponse fromEntity(ChatRoom chatRoom, String latestMsg) {
         return ChatRoomListResponse.builder()
                 .id(chatRoom.getId())
                 .title(chatRoom.getTitle())
+                .latestMsg(latestMsg)
                 .build();
     }
 }
