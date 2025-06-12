@@ -34,8 +34,9 @@
                                  style="font-size: 20px; color: var(--medium-gray-color);">
                                 group
                             </div>
-                            <p>[[${row.userCount}]] / [[${row.maxUser}]]</p>
+                            <p th:text="${row.userCount} + ' / ' + ${row.maxUser}"></p>
                         </div>
+                        <button type="button" th:onclick="|location.href='@{/chat/room/{id}(id = ${row.id})}'|">Join</button>
                     </div>
                 </td>
             </tr>
