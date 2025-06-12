@@ -45,8 +45,8 @@ public class ChatRoomService {
     }
 
     public Page<DiscoverListResponse> searchChatRooms(Pageable pageable, String keyword) {
-           return chatRoomRepository.findByTitleContainingIgnoreCase(pageable, keyword)
-                   .map(DiscoverListResponse::fromEntity);
+        return chatRoomRepository.findByTitleContainingIgnoreCase(pageable, keyword)
+                .map(DiscoverListResponse::fromEntity);
     }
 
     public void joinRoom() {
