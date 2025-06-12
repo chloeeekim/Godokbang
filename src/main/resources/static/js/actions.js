@@ -11,3 +11,14 @@ function sendMessage() {
         body: JSON.stringify(body)
     });
 }
+
+function joinRoom(button) {
+    const roomId = button.getAttribute('data-id');
+    fetch(`/chat/room/${roomId}/join`, {
+        method: 'POST'
+    }).then(res => {
+        if (res.redirected) {
+            window.location.href = res.url;
+        }
+    });
+}

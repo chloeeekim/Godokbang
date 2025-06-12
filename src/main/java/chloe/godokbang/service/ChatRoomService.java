@@ -5,6 +5,7 @@ import chloe.godokbang.domain.ChatRoomUser;
 import chloe.godokbang.domain.User;
 import chloe.godokbang.domain.enums.ChatRoomRole;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
+import chloe.godokbang.dto.response.ChatRoomListResponse;
 import chloe.godokbang.dto.response.DiscoverListResponse;
 import chloe.godokbang.repository.ChatRoomRepository;
 import chloe.godokbang.repository.ChatRoomUserRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -49,7 +51,22 @@ public class ChatRoomService {
                 .map(DiscoverListResponse::fromEntity);
     }
 
-    public void joinRoom() {
+    public void joinRoom(UUID chatRoomId, User user) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).get();
+        // TODO 기존 join 여부 확인, maxUser 넘는지 확인
+        chatRoomUserRepository.save(new ChatRoomUser(chatRoom, user, ChatRoomRole.USER));
+        chatRoom.incrementUserCount();
+    }
 
+    public boolean checkAlreadyJoined(UUID chatRoomId, UUID userId) {
+        return chatRoomUserRepository.existsByChatRoomIdAndUserId(chatRoomId, userId);
+    }
+
+    public List<ChatRoomListResponse> getChatRoomsOfUser(UUID userId) {
+        User user = userRepository.findById(userId).get();
+        return user.getChatRooms().stream()
+                .map(ChatRoomUser::getChatRoom)
+                .map(ChatRoomListResponse::fromEntity)
+                .toList();
     }
 }

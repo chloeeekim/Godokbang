@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/contentLayout}"
+      layout:fragment="content">
+<div th:if="${#lists.isEmpty(rooms)}" class="empty-content">
+    <p class="text-primary">Nothing found.</p>
+    <p class="text-secondary">Discover chat rooms and dive into the conversation you enjoy.</p>
+    <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/discover}'|">
+        Discover chat rooms
+    </button>
+</div>
+<div th:unless="${#lists.isEmpty(rooms)}" class="content-main">
+    <table>
+        <tbody>
+        <tr th:each="row : ${rooms}">
+            <td>
+                <div class="wrap-list" th:onclick="|location.href='@{/chat/room/{id}(id = ${row.id})}'|">
+                    <p class="list-title" th:text="${row.title}"></p>
+                    <p class="list-latestMsg" th:text="${row.latestMsg}"></p>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>

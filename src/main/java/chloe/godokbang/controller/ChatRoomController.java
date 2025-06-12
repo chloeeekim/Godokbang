@@ -2,6 +2,7 @@ package chloe.godokbang.controller;
 
 import chloe.godokbang.auth.CustomUserDetails;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
+import chloe.godokbang.dto.response.ChatRoomListResponse;
 import chloe.godokbang.dto.response.DiscoverListResponse;
 import chloe.godokbang.service.ChatRoomService;
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -57,5 +59,21 @@ public class ChatRoomController {
 
         UUID roomId = chatRoomService.createChatRoom(request, userDetails.getUser());
         return "redirect:/chat/room/" + roomId;
+    }
+
+    @PostMapping("/room/{id}/join")
+    public String joinChatRoom(@PathVariable(name = "id") UUID roomId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (!chatRoomService.checkAlreadyJoined(roomId, userDetails.getUser().getId())) {
+            chatRoomService.joinRoom(roomId, userDetails.getUser());
+        }
+        return "redirect:/chat/room/" + roomId;
+    }
+
+    @GetMapping("/rooms")
+    public String getChatRoomListPage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<ChatRoomListResponse> rooms = chatRoomService.getChatRoomsOfUser(userDetails.getUser().getId());
+        model.addAttribute("rooms", rooms);
+        model.addAttribute("chatSelected", true);
+        return "pages/chat/roomList";
     }
 }

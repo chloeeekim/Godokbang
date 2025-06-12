@@ -95,9 +95,3 @@
     justify-content: flex-end;
     align-items: center;
 }
-.content-main {
-    padding: 10px 0;
-    display: flex;
-    gap: 10px;
-    flex-direction: column;
-}

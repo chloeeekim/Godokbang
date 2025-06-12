@@ -136,6 +136,7 @@ select.input-text {
 }
 .content {
     padding: 20px 20px 20px 320px;
+    height: 100%;
 }
 table {
     border-collapse: collapse;
@@ -146,6 +147,14 @@ tr {
     &:last-child {
         border-bottom: none;
     }
+}
+.content-main {
+    padding: 10px 0;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
 }
 .content-bottom {
     display: flex;
