@@ -5,6 +5,7 @@ import chloe.godokbang.domain.ChatRoom;
 import chloe.godokbang.domain.ChatRoomUser;
 import chloe.godokbang.domain.User;
 import chloe.godokbang.domain.enums.ChatRoomRole;
+import chloe.godokbang.domain.enums.MessageType;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
 import chloe.godokbang.dto.response.ChatRoomListResponse;
 import chloe.godokbang.dto.response.DiscoverListResponse;
@@ -80,7 +81,12 @@ public class ChatRoomService {
                 .map(ChatRoomUser::getChatRoom)
                 .map(chatRoom -> {
                     Optional<ChatMessage> latest = chatMessageRepository.findLatestMessage(chatRoom.getId());
-                    return ChatRoomListResponse.fromEntity(chatRoom, latest.isEmpty() ? "" : latest.get().getContent());
+                    if (latest.isEmpty()) {
+                        return ChatRoomListResponse.fromEntity(chatRoom, "");
+                    } else {
+                        String latestMsg = latest.get().getType() == MessageType.IMAGE ? "<IMAGE>" : latest.get().getContent();
+                        return ChatRoomListResponse.fromEntity(chatRoom, latestMsg);
+                    }
                 })
                 .toList();
     }
