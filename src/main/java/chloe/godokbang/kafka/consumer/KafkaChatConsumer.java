@@ -4,16 +4,20 @@ import chloe.godokbang.domain.ChatMessage;
 import chloe.godokbang.domain.ChatRoom;
 import chloe.godokbang.domain.User;
 import chloe.godokbang.dto.request.ChatMessageRequest;
+import chloe.godokbang.dto.request.UploadImageRequest;
 import chloe.godokbang.dto.response.ChatMessageResponse;
 import chloe.godokbang.repository.ChatMessageRepository;
 import chloe.godokbang.repository.ChatRoomRepository;
 import chloe.godokbang.repository.UserRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @lombok.extern.slf4j.Slf4j
 @Component
@@ -30,20 +34,38 @@ public class KafkaChatConsumer {
     @KafkaListener(topics = "chat", groupId = "chat-group")
     public void consume(String jsonMessage) {
         try {
-            ChatMessageRequest request = objectMapper.readValue(jsonMessage, ChatMessageRequest.class);
+            JsonNode rootNode = objectMapper.readTree(jsonMessage);
+            String type = rootNode.get("type").asText();
+            ChatMessage message;
 
-            ChatRoom chatRoom = chatRoomRepository.findById(request.getRoomId())
-                    .orElseThrow(() -> new IllegalArgumentException("Chatroom not found"));
+            if (type.equals("IMAGE")) {
+                UploadImageRequest request = objectMapper.readValue(jsonMessage, UploadImageRequest.class);
 
-            User sender = userRepository.findByEmail(request.getUserEmail())
-                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                message = request.toEntity(getChatRoom(request.getRoomId()), getSender(request.getUserEmail()));
+            } else {
+                ChatMessageRequest request = objectMapper.readValue(jsonMessage, ChatMessageRequest.class);
 
-            ChatMessage message = request.toEntity(chatRoom, sender);
+                message = request.toEntity(getChatRoom(request.getRoomId()), getSender(request.getUserEmail()));
+            }
+
             chatMessageRepository.save(message);
-
-            messagingTemplate.convertAndSend("/topic/chatroom." + request.getRoomId(), ChatMessageResponse.fromEntity(message));
+            convertAndSend(message.getChatRoom().getId(), message);
         } catch (Exception e) {
             log.error("Failed to consume chat message", e);
         }
+    }
+
+    private void convertAndSend(UUID roomId, ChatMessage message) {
+        messagingTemplate.convertAndSend("/topic/chatroom." + roomId, ChatMessageResponse.fromEntity(message));
+    }
+
+    private ChatRoom getChatRoom(UUID roomId) {
+        return chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Chatroomm not found."));
+    }
+
+    private User getSender(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found."));
     }
 }
