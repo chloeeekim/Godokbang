@@ -113,8 +113,9 @@
 .chat-box {
     display: flex;
     flex-direction: column;
-    padding-bottom: 8px;
     overflow-y: auto;
+    margin-top: 60px;
+    margin-bottom: 8px;
     > div {
         padding: 8px;
     }
@@ -134,13 +135,14 @@
 #file {
     display: none;
 }
-.btn-upload {
+.btn-upload, .btn-back {
     border-radius: 8px;
     border: 1px solid var(--medium-gray-color);
     width: 40px;
     height: 40px;
-    text-align: center;
-    align-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     &:hover {
         background: var(--lighter-gray-color);
@@ -168,4 +170,25 @@
 .sent-at {
     color: var(--medium-gray-color);
     font-size: 12px;
+}
+.chat-top {
+    position: fixed;
+    top: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+}
+.chat-title {
+    font-weight: 600;
+    font-size: 18px;
+}
+.line {
+    background: var(--light-gray-color);
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    position: fixed;
+    top: 70px;
+    width: calc(100vw - 340px);
 }

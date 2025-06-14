@@ -5,11 +5,22 @@
       layout:decorate="~{layouts/contentLayout}"
       layout:fragment="content">
 <div class="chat-content">
+    <div class="chat-top">
+        <div class="btn-back" th:onclick="|location.href='@{/chat/rooms}'|">
+            <div class="material-icons-outlined" style="font-size: 20px; color: var(--medium-gray-color);">
+                arrow_back
+            </div>
+        </div>
+        <p class="chat-title" th:text="${chatRoom.title}"></p>
+    </div>
+    <div class="line"></div>
     <div id="chat-box" class="chat-box"></div>
     <div class="chat-bottom">
         <label for="file">
             <div class="btn-upload">
-                <div class="material-icons-outlined" style="font-size: 20px; color: var(--medium-gray-color);">add_photo_alternate</div>
+                <div class="material-icons-outlined" style="font-size: 20px; color: var(--medium-gray-color);">
+                    add_photo_alternate
+                </div>
             </div>
         </label>
         <input type="file" name="file" id="file" accept="image/*" onchange="uploadFile(this)"/>
@@ -20,7 +31,7 @@
     </div>
 </div>
 <script th:inline="javascript">
-    const roomId = [[${chatRoomId}]];
+    const roomId = [[${chatRoom.id}]];
     let stompClient = null;
     connect(() => getPreviousMessages());
     function autoResize(textarea) {
