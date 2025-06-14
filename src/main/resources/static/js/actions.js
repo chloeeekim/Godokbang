@@ -1,7 +1,7 @@
 function sendMessage() {
     const body = {
         roomId: roomId,
-        message: document.getElementById('chat-input').value,
+        content: document.getElementById('chat-input').value,
         type: "TEXT"
     };
 
@@ -43,10 +43,10 @@ function addMessage(msg) {
     const chatBox = document.getElementById('chat-box');
     const line = document.createElement('div');
     if (msg.type == 'ENTER' || msg.type == 'LEAVE' || msg.type == 'CREATE') {
-        line.innerText = `${msg.message}`;
+        line.innerText = `${msg.content}`;
         line.classList.add('system-message');
     } else {
-        line.innerText = `${msg.senderNickname} : ${msg.message}`;
+        line.innerText = `${msg.senderNickname} : ${msg.content}`;
     }
     chatBox.appendChild(line);
 }

@@ -24,7 +24,7 @@ public class ChatMessage {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    private String message;
+    private String content; // TEXT or IMAGE URL
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -33,10 +33,10 @@ public class ChatMessage {
     private LocalDateTime sentAt;
 
     @Builder
-    public ChatMessage(ChatRoom chatRoom, User sender, String message, MessageType type) {
+    public ChatMessage(ChatRoom chatRoom, User sender, String content, MessageType type) {
         this.chatRoom = chatRoom;
         this.sender = sender;
-        this.message = message;
+        this.content = content;
         this.type = type;
         this.sentAt = LocalDateTime.now();
     }

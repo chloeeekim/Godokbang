@@ -17,14 +17,14 @@ import java.util.UUID;
 public class ChatMessageRequest {
     private UUID roomId;
     private String userEmail;
-    private String message;
+    private String content;
     private MessageType type;
 
     @Builder
-    public ChatMessageRequest(UUID roomId, String userEmail, String message, MessageType type) {
+    public ChatMessageRequest(UUID roomId, String userEmail, String content, MessageType type) {
         this.roomId = roomId;
         this.userEmail = userEmail;
-        this.message = message;
+        this.content = content;
         this.type = type;
     }
 
@@ -32,7 +32,7 @@ public class ChatMessageRequest {
         return ChatMessage.builder()
                 .chatRoom(chatRoom)
                 .sender(sender)
-                .message(this.message)
+                .content(this.content)
                 .type(this.type)
                 .build();
     }

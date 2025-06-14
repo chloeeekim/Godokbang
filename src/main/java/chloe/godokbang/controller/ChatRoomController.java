@@ -103,7 +103,7 @@ public class ChatRoomController {
                 .roomId(roomId)
                 .userEmail(user.getEmail())
                 .type(type)
-                .message(user.getNickname() + msg)
+                .content(user.getNickname() + msg)
                 .build();
 
         String jsonMessage = objectMapper.writeValueAsString(request);

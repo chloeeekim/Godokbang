@@ -15,15 +15,15 @@ public class ChatMessageResponse {
 
     private UUID roomId;
     private String senderNickname;
-    private String message;
+    private String content;
     private MessageType type;
     private LocalDateTime sentAt;
 
     @Builder
-    public ChatMessageResponse(UUID roomId, String senderNickname, String message, MessageType type, LocalDateTime sentAt) {
+    public ChatMessageResponse(UUID roomId, String senderNickname, String content, MessageType type, LocalDateTime sentAt) {
         this.roomId = roomId;
         this.senderNickname = senderNickname;
-        this.message = message;
+        this.content = content;
         this.type = type;
         this.sentAt = sentAt;
     }
@@ -32,7 +32,7 @@ public class ChatMessageResponse {
         return ChatMessageResponse.builder()
                 .roomId(chatMessage.getChatRoom().getId())
                 .senderNickname(chatMessage.getSender().getNickname())
-                .message(chatMessage.getMessage())
+                .content(chatMessage.getContent())
                 .type(chatMessage.getType())
                 .sentAt(chatMessage.getSentAt())
                 .build();

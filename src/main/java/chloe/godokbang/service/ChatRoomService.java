@@ -80,7 +80,7 @@ public class ChatRoomService {
                 .map(ChatRoomUser::getChatRoom)
                 .map(chatRoom -> {
                     Optional<ChatMessage> latest = chatMessageRepository.findLatestMessage(chatRoom.getId());
-                    return ChatRoomListResponse.fromEntity(chatRoom, latest.isEmpty() ? "" : latest.get().getMessage());
+                    return ChatRoomListResponse.fromEntity(chatRoom, latest.isEmpty() ? "" : latest.get().getContent());
                 })
                 .toList();
     }
