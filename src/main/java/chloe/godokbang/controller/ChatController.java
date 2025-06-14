@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,12 +29,6 @@ public class ChatController {
     private final KafkaChatProducer kafkaChatProducer;
     private final ChatMessageService chatMessageService;
     private final S3Uploader s3Uploader;
-
-    @GetMapping("/room/{id}")
-    public String getChatRoomPage(Model model, @PathVariable(name = "id") UUID id) {
-        model.addAttribute("chatRoomId", id);
-        return "pages/chat/chatRoom";
-    }
 
     @GetMapping("/{id}/message")
     @ResponseBody

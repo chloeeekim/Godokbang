@@ -8,6 +8,7 @@ import chloe.godokbang.domain.enums.ChatRoomRole;
 import chloe.godokbang.domain.enums.MessageType;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
 import chloe.godokbang.dto.response.ChatRoomListResponse;
+import chloe.godokbang.dto.response.ChatRoomResponse;
 import chloe.godokbang.dto.response.DiscoverListResponse;
 import chloe.godokbang.repository.ChatMessageRepository;
 import chloe.godokbang.repository.ChatRoomRepository;
@@ -89,5 +90,11 @@ public class ChatRoomService {
                     }
                 })
                 .toList();
+    }
+
+    public ChatRoomResponse getChatRoomById(UUID chatRoomId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new IllegalArgumentException("Chatroom not found."));
+        return ChatRoomResponse.fromEntity(chatRoom);
     }
 }

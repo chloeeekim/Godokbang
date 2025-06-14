@@ -6,6 +6,7 @@ import chloe.godokbang.domain.enums.MessageType;
 import chloe.godokbang.dto.request.ChatMessageRequest;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
 import chloe.godokbang.dto.response.ChatRoomListResponse;
+import chloe.godokbang.dto.response.ChatRoomResponse;
 import chloe.godokbang.dto.response.DiscoverListResponse;
 import chloe.godokbang.kafka.producer.KafkaChatProducer;
 import chloe.godokbang.service.ChatRoomService;
@@ -89,6 +90,13 @@ public class ChatRoomController {
         model.addAttribute("rooms", rooms);
         model.addAttribute("chatSelected", true);
         return "pages/chat/roomList";
+    }
+
+    @GetMapping("/room/{id}")
+    public String getChatRoomPage(Model model, @PathVariable(name = "id") UUID id) {
+        ChatRoomResponse room = chatRoomService.getChatRoomById(id);
+        model.addAttribute("chatRoom", room);
+        return "pages/chat/chatRoom";
     }
 
     private void sendSystemMessage(UUID roomId, User user, MessageType type) throws JsonProcessingException {
