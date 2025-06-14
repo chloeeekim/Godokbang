@@ -14,14 +14,14 @@
             </div>
         </form>
     </div>
-    <div th:if="${#lists.isEmpty(rooms)}" class="empty-content">
+    <div th:if="${rooms.totalElements == 0}" class="empty-content">
         <p class="text-primary">Nothing found.</p>
         <p class="text-secondary">Get started by creating a chat room.</p>
         <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/room/new}'|">
             Create new room
         </button>
     </div>
-    <div th:unless="${#lists.isEmpty(rooms)}" class="content-main">
+    <div th:unless="${rooms.totalElements == 0}" class="content-main">
         <table>
             <tbody>
             <tr th:each="row : ${rooms}">
