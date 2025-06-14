@@ -93,6 +93,7 @@ function addMessage(msg) {
         line.classList.add('wrap-message');
     }
     chatBox.appendChild(line);
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 function getPreviousMessages() {
