@@ -1,11 +1,9 @@
 package chloe.godokbang.service;
 
-import chloe.godokbang.domain.ChatMessage;
 import chloe.godokbang.domain.ChatRoom;
 import chloe.godokbang.domain.ChatRoomUser;
 import chloe.godokbang.domain.User;
 import chloe.godokbang.domain.enums.ChatRoomRole;
-import chloe.godokbang.domain.enums.MessageType;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
 import chloe.godokbang.dto.response.ChatRoomListResponse;
 import chloe.godokbang.dto.response.ChatRoomResponse;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -78,17 +75,8 @@ public class ChatRoomService {
 
     public List<ChatRoomListResponse> getChatRoomsOfUser(UUID userId) {
         User user = userRepository.findById(userId).get();
-        return user.getChatRooms().stream()
-                .map(ChatRoomUser::getChatRoom)
-                .map(chatRoom -> {
-                    Optional<ChatMessage> latest = chatMessageRepository.findLatestMessage(chatRoom.getId());
-                    if (latest.isEmpty()) {
-                        return ChatRoomListResponse.fromEntity(chatRoom, "");
-                    } else {
-                        String latestMsg = latest.get().getType() == MessageType.IMAGE ? "<IMAGE>" : latest.get().getContent();
-                        return ChatRoomListResponse.fromEntity(chatRoom, latestMsg);
-                    }
-                })
+        return chatRoomRepository.findByUserOrderByLatestMsgAtDesc(user).stream()
+                .map(ChatRoomListResponse::fromEntity)
                 .toList();
     }
 

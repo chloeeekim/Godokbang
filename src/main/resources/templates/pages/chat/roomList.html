@@ -19,6 +19,7 @@
                 <div class="wrap-list" th:onclick="|location.href='@{/chat/room/{id}(id = ${row.id})}'|">
                     <p class="list-title" th:text="${row.title}"></p>
                     <p class="list-latestMsg" th:text="${row.latestMsg}"></p>
+                    <p class="list-latestMsgAT" th:text="${row.latestMsgAt}"></p>
                 </div>
             </td>
         </tr>

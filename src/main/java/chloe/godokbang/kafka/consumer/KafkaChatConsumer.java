@@ -37,19 +37,29 @@ public class KafkaChatConsumer {
             JsonNode rootNode = objectMapper.readTree(jsonMessage);
             String type = rootNode.get("type").asText();
             ChatMessage message;
+            ChatRoom chatRoom;
 
             if (type.equals("IMAGE")) {
                 UploadImageRequest request = objectMapper.readValue(jsonMessage, UploadImageRequest.class);
+                chatRoom = getChatRoom(request.getRoomId());
 
-                message = request.toEntity(getChatRoom(request.getRoomId()), getSender(request.getUserEmail()));
+                message = request.toEntity(chatRoom, getSender(request.getUserEmail()));
             } else {
                 ChatMessageRequest request = objectMapper.readValue(jsonMessage, ChatMessageRequest.class);
+                chatRoom = getChatRoom(request.getRoomId());
 
-                message = request.toEntity(getChatRoom(request.getRoomId()), getSender(request.getUserEmail()));
+                message = request.toEntity(chatRoom, getSender(request.getUserEmail()));
             }
 
             chatMessageRepository.save(message);
             convertAndSend(message.getChatRoom().getId(), message);
+
+            switch (message.getType()) {
+                case TEXT -> chatRoom.updateLatest(message.getContent(), message.getSentAt());
+                case IMAGE -> chatRoom.updateLatest("<IMAGE>", message.getSentAt());
+                case CREATE -> chatRoom.updateLatest("", message.getSentAt());
+            }
+            chatRoomRepository.save(chatRoom);
         } catch (Exception e) {
             log.error("Failed to consume chat message", e);
         }
