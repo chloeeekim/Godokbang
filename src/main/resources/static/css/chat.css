@@ -28,14 +28,15 @@
 .btn-form {
     width: 300px;
 }
-.search-bar {
+.search-bar, .send-wrap {
     border: 1px solid var(--light-gray-color);
     border-radius: 8px;
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
 }
-.search-input {
+.search-input, .chat-input {
     display: block;
     width: 100%;
     background: transparent;
@@ -47,7 +48,12 @@
     outline: none;
     box-sizing: border-box;
 }
-.btn-search {
+.chat-input {
+    padding: 8px 12px 8px 12px;
+    resize: none;
+    overflow: hidden;
+}
+.btn-search, .btn-send {
     background: var(--primary-color);
     color: white;
     border-radius: 8px;
@@ -97,4 +103,68 @@
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
+}
+.chat-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: flex-end;
+}
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 8px;
+    > div {
+        padding: 8px;
+    }
+}
+.system-message {
+    text-align: center;
+    background: var(--lighter-gray-color);
+    border-radius: 8px;
+}
+.chat-bottom {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 4px;
+    align-items: center;
+}
+#file {
+    display: none;
+}
+.btn-upload {
+    border-radius: 8px;
+    border: 1px solid var(--medium-gray-color);
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    align-content: center;
+    cursor: pointer;
+    &:hover {
+        background: var(--lighter-gray-color);
+    }
+}
+.img-message {
+    width: 200px;
+    height: 150px;
+    object-fit: cover;
+}
+.wrap-message {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.sender-nickname {
+    font-weight: 600;
+}
+.meta-message {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+}
+.sent-at {
+    color: var(--medium-gray-color);
+    font-size: 12px;
 }

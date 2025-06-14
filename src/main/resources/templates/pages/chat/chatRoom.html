@@ -4,14 +4,28 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/contentLayout}"
       layout:fragment="content">
-<div>
-    <div id="chat-box"></div>
-    <input id="chat-input">
-    <button type="button" th:onclick="sendMessage()">Send</button>
+<div class="chat-content">
+    <div id="chat-box" class="chat-box"></div>
+    <div class="chat-bottom">
+        <label for="file">
+            <div class="btn-upload">
+                <div class="material-icons-outlined" style="font-size: 20px; color: var(--medium-gray-color);">add_photo_alternate</div>
+            </div>
+        </label>
+        <input type="file" name="file" id="file" accept="image/*" onchange="uploadFile(this)"/>
+        <div class="send-wrap">
+            <textarea id="chat-input" class="chat-input" rows="1" oninput="autoResize(this)"></textarea>
+            <button type="button" class="btn-send" th:onclick="sendMessage()">Send</button>
+        </div>
+    </div>
 </div>
 <script th:inline="javascript">
     const roomId = [[${chatRoomId}]];
     let stompClient = null;
     connect(() => getPreviousMessages());
+    function autoResize(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
 </script>
 </html>

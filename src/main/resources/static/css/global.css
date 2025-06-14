@@ -136,7 +136,7 @@ select.input-text {
 }
 .content {
     padding: 20px 20px 20px 320px;
-    height: 100%;
+    height: calc(100vh - 40px);
 }
 table {
     border-collapse: collapse;

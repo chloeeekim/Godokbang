@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Getter
@@ -17,7 +18,7 @@ public class ChatMessageResponse {
     private String senderNickname;
     private String content;
     private MessageType type;
-    private LocalDateTime sentAt;
+    private String sentAt;
 
     @Builder
     public ChatMessageResponse(UUID roomId, String senderNickname, String content, MessageType type, LocalDateTime sentAt) {
@@ -25,7 +26,7 @@ public class ChatMessageResponse {
         this.senderNickname = senderNickname;
         this.content = content;
         this.type = type;
-        this.sentAt = sentAt;
+        this.sentAt = formatDateTime(sentAt);
     }
 
     public static ChatMessageResponse fromEntity(ChatMessage chatMessage) {
@@ -36,5 +37,9 @@ public class ChatMessageResponse {
                 .type(chatMessage.getType())
                 .sentAt(chatMessage.getSentAt())
                 .build();
+    }
+
+    private String formatDateTime(LocalDateTime ldt) {
+        return ldt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
