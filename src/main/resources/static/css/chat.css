@@ -64,7 +64,6 @@
 }
 .wrap-list {
     display: flex;
-    flex-direction: column;
     border-radius: 8px;
     padding: 10px;
     &:hover {
@@ -72,12 +71,19 @@
     }
     &:not(.discover) {
         cursor: pointer;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: calc(100vw - 360px);
+    }
+    &.discover {
+        flex-direction: column;
     }
 }
 .list-title {
     font-weight: 600;
 }
-.list-description {
+.list-description, .list-latest-msg {
     font-size: 14px;
     color: var(--medium-gray-color);
 }
@@ -167,7 +173,7 @@
     align-items: baseline;
     gap: 8px;
 }
-.sent-at {
+.sent-at, .list-latest-msg-at {
     color: var(--medium-gray-color);
     font-size: 12px;
 }
@@ -191,4 +197,14 @@
     position: fixed;
     top: 70px;
     width: calc(100vw - 340px);
+}
+.list-left {
+    width: 70%;
+}
+.overflow-ellipsis {
+    text-overflow: ellipsis;
+    width: calc(100%);
+    white-space: nowrap;
+    overflow: hidden;
+    word-break: break-all;
 }

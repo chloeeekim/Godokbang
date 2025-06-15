@@ -46,6 +46,7 @@ button {
 }
 p {
     margin: 0px;
+    word-wrap: break-word;
     &.text-primary {
         font-size: 24px;
         font-weight: 600;
@@ -157,6 +158,7 @@ tr {
     flex-direction: column;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 .content-bottom {
     display: flex;
