@@ -42,7 +42,7 @@ public class ChatController {
             throws JsonProcessingException {
         request.setUserEmail(userDetails.getUsername());
         String jsonMessage = objectMapper.writeValueAsString(request);
-        kafkaChatProducer.sendMessage("chat", jsonMessage);
+        kafkaChatProducer.sendMessage(jsonMessage);
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -53,6 +53,6 @@ public class ChatController {
         request.setImageUrl(imageUrl);
         request.setUserEmail(userDetails.getUsername());
         String jsonMessage = objectMapper.writeValueAsString(request);
-        kafkaChatProducer.sendMessage("chat", jsonMessage);
+        kafkaChatProducer.sendMessage(jsonMessage);
     }
 }

@@ -115,6 +115,6 @@ public class ChatRoomController {
                 .build();
 
         String jsonMessage = objectMapper.writeValueAsString(request);
-        kafkaChatProducer.sendMessage("chat", jsonMessage);
+        kafkaChatProducer.sendMessage(jsonMessage);
     }
 }
