@@ -41,7 +41,7 @@
                     <div class="material-icons-outlined">chevron_right</div>
                 </div>
             </div>
-            <div class="menu" th:classappend="${notiSelected}? 'menu-selected'">
+            <div class="menu" th:classappend="${notiSelected}? 'menu-selected'" th:onclick="|location.href='@{/notification}'|">
                 <div class="menu-left">
                     <div class="material-icons-outlined">notifications</div>
                     <p class="menu-title">Notification</p>

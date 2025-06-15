@@ -1,6 +1,7 @@
 package chloe.godokbang.repository;
 
 import chloe.godokbang.domain.ChatRoomUser;
+import chloe.godokbang.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +14,17 @@ import java.util.UUID;
 public interface ChatRoomUserRepository extends JpaRepository<ChatRoomUser, Long> {
     boolean existsByChatRoomIdAndUserId(UUID chatRoomId, UUID userId);
 
-    @Query("SELECT cru.chatRoom.id FROM ChatRoomUser cru WHERE cru.user.id = :userId")
+    @Query("""
+            SELECT cru.chatRoom.id
+            FROM ChatRoomUser cru
+            WHERE cru.user.id = :userId
+            """)
     List<UUID> findChatRoomIdsByUserId(@Param("userId") UUID userId);
+
+    @Query("""
+            SELECT cru.user
+            FROM ChatRoomUser cru
+            WHERE cru.chatRoom.id = :roomId
+            """)
+    List<User> findUsersByChatRoomId(@Param("roomId") UUID roomId);
 }
