@@ -47,53 +47,41 @@ function addMessage(msg) {
     const chatBox = document.getElementById('chat-box');
     const line = document.createElement('div');
     if (msg.type == 'ENTER' || msg.type == 'LEAVE' || msg.type == 'CREATE') {
-        line.innerText = `${msg.content}`;
+        line.innerText = msg.content;
         line.classList.add('system-message');
     } else if (msg.type == 'TEXT') {
-        const sender = document.createElement('p');
-        sender.innerText = `${msg.senderNickname}`;
-        sender.classList.add('sender-nickname');
+        const sender = createElement('p', 'sender-nickname', msg.senderNickname);
+        const sentAt = createElement('p', 'sent-at', msg.sentAt);
 
-        const sentAt = document.createElement('p');
-        sentAt.innerText = `${msg.sentAt}`;
-        sentAt.classList.add('sent-at');
+        const meta = createElement('div', 'meta-message');
+        meta.append(sender, sentAt);
 
-        const div = document.createElement('div');
-        div.classList.add('meta-message');
-        div.appendChild(sender);
-        div.appendChild(sentAt);
+        const content = createElement('p', 'message-content', msg.content);
 
-        const content = document.createElement('p');
-        content.innerText = `${msg.content}`;
-        content.classList.add('message-content');
-
-        line.appendChild(div);
-        line.appendChild(content);
         line.classList.add('wrap-message');
+        line.append(meta, content);
     } else {
-        const sender = document.createElement('p');
-        sender.innerText = `${msg.senderNickname}`;
-        sender.classList.add('sender-nickname');
+        const sender = createElement('p', 'sender-nickname', msg.senderNickname);
+        const sentAt = createElement('p', 'sent-at', msg.sentAt);
 
-        const sentAt = document.createElement('p');
-        sentAt.innerText = `${msg.sentAt}`;
-        sentAt.classList.add('sent-at');
+        const meta = createElement('div', 'meta-message');
+        meta.append(sender, sentAt);
 
-        const div = document.createElement('div');
-        div.classList.add('meta-message');
-        div.appendChild(sender);
-        div.appendChild(sentAt);
+        const img = createElement('img', 'img-message');
+        img.setAttribute('src', msg.content);
 
-        const img = document.createElement('img');
-        img.setAttribute('src', `${msg.content}`);
-        img.classList.add('img-message');
-
-        line.appendChild(div);
-        line.appendChild(img);
         line.classList.add('wrap-message');
+        line.append(meta, img);
     }
-    chatBox.appendChild(line);
+    chatBox.append(line);
     chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function createElement(tag, className, textContent) {
+    const elem = document.createElement(tag);
+    if (className) elem.classList.add(className);
+    if (textContent) elem.textContent = textContent;
+    return elem;
 }
 
 function getPreviousMessages() {
