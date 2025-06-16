@@ -22,3 +22,8 @@ cloud:
     credentials:
       access-key: secret
       secret-key: secret
+
+# properties
+app:
+  pagination:
+    page-size: 10
