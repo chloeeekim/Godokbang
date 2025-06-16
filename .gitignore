@@ -38,4 +38,4 @@ out/
 /src/main/resources/application-secret.yml
 
 ### QueryDsl Q-class
-/src/main/generated/querydsl/
+/src/main/generated/
