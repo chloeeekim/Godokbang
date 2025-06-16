@@ -29,7 +29,11 @@ public class Notification extends BaseEntity {
         this.message = message;
     }
 
-    public void changeIsReadTrue() {
+    public void markAsRead() {
         this.isRead = true;
+    }
+
+    public void markAsUnread() {
+        this.isRead = false;
     }
 }
