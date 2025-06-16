@@ -4,62 +4,50 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/contentLayout}"
       layout:fragment="content">
-<div>
-    <div th:if="${notifications.totalElements == 0}" class="empty-content">
+<div style="height: 100%;">
+    <div id="empty-content" class="empty-content">
         <p class="text-primary">Nothing found.</p>
         <p class="text-secondary">We'll let you know when something happens.</p>
         <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/rooms}'|">
             Go to chat room list
         </button>
     </div>
-    <div th:unless="${notifications.totalElements == 0}" class="content-main">
-        <table>
-            <tbody>
-            <tr th:each="row : ${notifications}">
-                <td>
-                    <div class="wrap-list notification">
-                        <p class="list-title" th:text="${row.roomTitle}"></p>
-                        <p class="list-sender" th:text="${row.senderNickname}"></p>
-                        <p class="list-content" th:text="${row.content}"></p>
-                        <p class="list-sentAt" th:text="${row.sentAt}"></p>
+    <div id="content-main" class="content-main" hidden>
+        <div id="notifications"></div>
+    </div>
+    <div hidden>
+        <div id="noti-dom" class="wrap-list notification fade-out">
+            <div class="noti-top">
+                <div class="room-title">
+                    <div class="material-icons-outlined" style="font-size: 20px; color: var(--medium-gray-color);">
+                        chat
                     </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="content-bottom">
-            <div class="pagination" th:with="
-            pageNumber = ${notifications.pageable.pageNumber},
-            pageSize = ${notifications.pageable.pageSize},
-            totalPages = ${notifications.totalPages},
-            startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
-            tempEndPage = ${startPage + pageSize - 1},
-            endPage = ${tempEndPage < totalPages ? tempEndPage : totalPages}">
-                <div th:if="${notifications.first}" class="page-item disabled">
-                    <p>&lt;</p>
+                    <p></p>
                 </div>
-                <div th:unless="${notifications.first}" class="page-item"
-                     th:onclick="|location.href='@{/notification(page=${pageNumber - 1})}'|">
-                    <p>&lt;</p>
-                </div>
-                <div th:each="page: ${#numbers.sequence(startPage, endPage)}">
-                    <div th:if="${page == pageNumber + 1}" class="page-item selected">
-                        <p th:text="${page}"></p>
-                    </div>
-                    <div th:unless="${page == pageNumber + 1}" class="page-item"
-                         th:onclick="|location.href='@{/notification(page=${page - 1})}'|">
-                        <p th:text="${page}"></p>
+                <div class="noti-actions">
+                    <div class="is-read" th:onclick="updateReadStatus(this)"></div>
+                    <div class="delete-noti material-icons-outlined" style="color: var(--medium-gray-color);"
+                         th:onclick="deleteNotification(this)">
+                        close
                     </div>
                 </div>
-                <div th:if="${notifications.last}" class="page-item disabled">
-                    <p>&gt;</p>
+            </div>
+            <div class="noti-message">
+                <div class="list-left">
+                    <p class="sender-nickname"></p>
+                    <p class="message-content"></p>
                 </div>
-                <div th:unless="${notifications.last}" class="page-item"
-                     th:onclick="|location.href='@{/notification(page=${pageNumber + 1})}'|">
-                    <p>&gt;</p>
+                <div class="list-right">
+                    <p class="sent-at"></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script th:inline="javascript">
+    let notiHasNext = true;
+    window.addEventListener('DOMContentLoaded', function() {
+        loadNotifications(10);
+    });
+</script>
 </html>

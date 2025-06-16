@@ -16,7 +16,7 @@
         <tbody>
         <tr th:each="row : ${rooms}">
             <td>
-                <div class="wrap-list" th:onclick="|location.href='@{/chat/room/{id}(id = ${row.id})}'|">
+                <div class="wrap-list rooms" th:onclick="|location.href='@{/chat/room/{id}(id = ${row.id})}'|">
                     <div class="list-left">
                         <p class="list-title overflow-ellipsis" th:text="${row.title}"></p>
                         <p class="list-latest-msg overflow-ellipsis" th:text="${row.latestMsg}"></p>

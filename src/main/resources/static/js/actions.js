@@ -111,3 +111,96 @@ function uploadFile(input) {
         body: formData
     });
 }
+
+function loadNotifications(count) {
+    if (!notiHasNext) return;
+
+    const notis = document.querySelectorAll('#notifications > #noti-dom');
+    const baseUrl = `/api/notifications`;
+    let queryString;
+
+    if (notis.length != 0) {
+        const params = {
+            lastCreatedAt: notis[notis.length - 1].dataset.createdAt,
+            lastId: notis[notis.length - 1].dataset.id,
+            size: count
+        };
+        queryString = new URLSearchParams(params).toString();
+    }
+
+    const url = notis.length == 0 ? baseUrl : `${baseUrl}?${queryString}`;
+
+    fetch(url, {
+        method: 'GET'
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.empty) {
+            document.getElementById('empty-content').hidden = true;
+            document.getElementById('content-main').hidden = false;
+
+            data.content.forEach(notification => {
+                addNotification(notification);
+            });
+        }
+        notiHasNext = !data.last;
+    });
+}
+
+function addNotification(noti) {
+    const div = document.getElementById('notifications');
+    const notiDom = document.getElementById('noti-dom');
+
+    const clone = notiDom.cloneNode(true);
+    clone.dataset.id = noti.id;
+    clone.dataset.createdAt = noti.createdAt;
+
+    clone.querySelector('.room-title > p').textContent = noti.roomTitle;
+    clone.querySelector('.sender-nickname').textContent = noti.senderNickname;
+    clone.querySelector('.message-content').textContent = noti.content;
+    clone.querySelector('.sent-at').textContent = noti.sentAt;
+    clone.querySelector('.is-read').classList.add(noti.read.toString());
+
+    div.append(clone, createElement('hr'));
+}
+
+function updateReadStatus(btn) {
+    const notiDom = btn.closest('#noti-dom');
+    const notiId = notiDom.dataset.id;
+    let uri;
+
+    if (btn.classList.contains("false")) {
+        uri = "read";
+        btn.classList.replace("false", "true");
+    } else {
+        uri = "unread";
+        btn.classList.replace("true", "false");
+    }
+
+    fetch(`/api/notifications/${notiId}/${uri}`, {
+        method: 'PATCH'
+    });
+}
+
+function deleteNotification(btn) {
+    const notiDom = btn.closest('#noti-dom');
+    const notiId = notiDom.dataset.id;
+
+    fetch(`/api/notifications/${notiId}`, {
+        method: 'DELETE'
+    });
+
+    notiDom.classList.add('hide');
+    notiDom.addEventListener("transitionend", () => {
+        notiDom.remove();
+        loadNotifications(1);
+
+        const notis = document.querySelectorAll('#notifications > #noti-dom');
+        if (notis.length == 0) {
+            document.getElementById('empty-content').hidden = false;
+            document.getElementById('content-main').hidden = true;
+        }
+    }, { once: true});
+
+    notiDom.nextSibling.remove();
+}
