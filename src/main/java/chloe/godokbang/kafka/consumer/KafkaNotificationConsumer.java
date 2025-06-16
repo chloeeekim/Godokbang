@@ -44,7 +44,7 @@ public class KafkaNotificationConsumer {
     }
 
     private void convertAndSend(UUID userId, Notification notification) {
-        messagingTemplate.convertAndSend("/topic/notification." + userId, NotificationResponse.fromEntity(notification, false));
+        messagingTemplate.convertAndSend("/topic/notification." + userId, NotificationResponse.fromEntity(notification));
     }
 
     private User getReceiver(String email) {
