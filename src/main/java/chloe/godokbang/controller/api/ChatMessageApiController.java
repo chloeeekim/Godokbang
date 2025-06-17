@@ -22,7 +22,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
-public class ChatApiController {
+public class ChatMessageApiController {
 
     private final ObjectMapper objectMapper;
     private final KafkaChatProducer kafkaChatProducer;
