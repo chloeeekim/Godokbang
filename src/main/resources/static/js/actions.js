@@ -6,7 +6,7 @@ function sendMessage() {
         type: "TEXT"
     };
 
-    fetch('/chat/message', {
+    fetch('/api/chat/message', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(body)
@@ -65,7 +65,10 @@ function addMessage(msg, isNew, isFirstFetch) {
     line.dataset.id = msg.id;
     line.dataset.sentAt = msg.sentAt;
 
-    const isScrollBottom = (chatBox.scrollTop === chatBox.scrollHeight);
+    const scrollTop = chatBox.scrollTop;
+    const clientHeight = chatBox.clientHeight;
+    const scrollHeight = chatBox.scrollHeight;
+    const isScrollBottom = (scrollTop + clientHeight >= scrollHeight);
 
     if (msg.type == 'ENTER' || msg.type == 'LEAVE' || msg.type == 'CREATE') {
         line.innerText = msg.content;
