@@ -30,7 +30,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
                         notification.receiver.id.eq(userId),
                         ltCreatedAtAndId(lastCreatedAt, lastId)
                 )
-                .orderBy(notification.createdAt.desc(), notification.createdAt.desc())
+                .orderBy(notification.createdAt.desc(), notification.id.desc())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
 
