@@ -10,24 +10,35 @@ import chloe.godokbang.service.ChatMessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 public class ChatMessageApiController {
 
     private final ObjectMapper objectMapper;
     private final KafkaChatProducer kafkaChatProducer;
     private final ChatMessageService chatMessageService;
     private final S3Uploader s3Uploader;
+
+    @GetMapping("/{id}")
+    public Slice<ChatMessageResponse> getChatMessages(
+            @PathVariable(name = "id") UUID roomId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime lastSentAt,
+            @RequestParam(required = false) Long lastId) {
+        return chatMessageService.getChatMessages(roomId, lastSentAt, lastId);
+    }
 
     @GetMapping("/{id}/message")
     public List<ChatMessageResponse> getPreviousMessages(@PathVariable(name = "id") UUID id) {

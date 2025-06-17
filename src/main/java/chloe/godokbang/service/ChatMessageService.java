@@ -1,12 +1,15 @@
 package chloe.godokbang.service;
 
+import chloe.godokbang.config.PaginationProperties;
 import chloe.godokbang.dto.response.ChatMessageResponse;
 import chloe.godokbang.repository.ChatMessageRepository;
-import chloe.godokbang.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,11 +19,17 @@ import java.util.UUID;
 public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
-    private final S3Uploader s3Uploader;
+    private final PaginationProperties paginationProperties;
 
     public List<ChatMessageResponse> getChatMessagesSaved(UUID roomId) {
         return chatMessageRepository.findByChatRoomIdOrderBySentAtAsc(roomId).stream()
                 .map(ChatMessageResponse::fromEntity)
                 .toList();
+    }
+
+    public Slice<ChatMessageResponse> getChatMessages(UUID roomId, LocalDateTime lastSentAt, Long lastId) {
+        PageRequest pageRequest = PageRequest.of(0, paginationProperties.getPageSize());
+        return chatMessageRepository.findChatMessageByChatRoomIdWithNoOffset(roomId, lastSentAt, lastId, pageRequest)
+                .map(ChatMessageResponse::fromEntity);
     }
 }
