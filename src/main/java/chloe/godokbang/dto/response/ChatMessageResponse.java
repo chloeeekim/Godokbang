@@ -14,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ChatMessageResponse {
 
+    private Long id;
     private UUID roomId;
     private String senderNickname;
     private String content;
@@ -21,7 +22,8 @@ public class ChatMessageResponse {
     private String sentAt;
 
     @Builder
-    public ChatMessageResponse(UUID roomId, String senderNickname, String content, MessageType type, LocalDateTime sentAt) {
+    public ChatMessageResponse(Long id, UUID roomId, String senderNickname, String content, MessageType type, LocalDateTime sentAt) {
+        this.id = id;
         this.roomId = roomId;
         this.senderNickname = senderNickname;
         this.content = content;
@@ -31,6 +33,7 @@ public class ChatMessageResponse {
 
     public static ChatMessageResponse fromEntity(ChatMessage chatMessage) {
         return ChatMessageResponse.builder()
+                .id(chatMessage.getId())
                 .roomId(chatMessage.getChatRoom().getId())
                 .senderNickname(chatMessage.getSender().getNickname())
                 .content(chatMessage.getContent())
