@@ -115,6 +115,7 @@ function uploadFile(input) {
 function loadNotifications(count) {
     if (!notiHasNext) return;
 
+    notiFetching = true;
     const notis = document.querySelectorAll('#notifications > #noti-dom');
     const baseUrl = `/api/notifications`;
     let queryString;
@@ -142,7 +143,10 @@ function loadNotifications(count) {
             data.content.forEach(notification => {
                 addNotification(notification);
             });
+
+            observeLastItem(notiObserver, '#notifications > #noti-dom');
         }
+        notiFetching = false;
         notiHasNext = !data.last;
     });
 }
@@ -203,4 +207,14 @@ function deleteNotification(btn) {
     }, { once: true});
 
     notiDom.nextSibling.remove();
+}
+
+function observeLastItem(observer, selector) {
+    const items = document.querySelectorAll(selector);
+    const lastItem = items[items.length - 1];
+
+    if (!lastItem) return;
+    if (observer) observer.disconnect();
+
+    observer.observe(lastItem);
 }

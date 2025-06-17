@@ -46,8 +46,19 @@
 </div>
 <script th:inline="javascript">
     let notiHasNext = true;
+    let notiFetching = false;
     window.addEventListener('DOMContentLoaded', function() {
         loadNotifications(10);
+    });
+    const notiObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (notiFetching || !notiHasNext) {
+                return;
+            }
+            if (entry.isIntersecting) {
+                loadNotifications(10);
+            }
+        });
     });
 </script>
 </html>
