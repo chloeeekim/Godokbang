@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,11 +37,6 @@ public class ChatMessageApiController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime lastSentAt,
             @RequestParam(required = false) Long lastId) {
         return chatMessageService.getChatMessages(roomId, lastSentAt, lastId);
-    }
-
-    @GetMapping("/{id}/message")
-    public List<ChatMessageResponse> getPreviousMessages(@PathVariable(name = "id") UUID id) {
-        return chatMessageService.getChatMessagesSaved(id);
     }
 
     @PostMapping("/message")

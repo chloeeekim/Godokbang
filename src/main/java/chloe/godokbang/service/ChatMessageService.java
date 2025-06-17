@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,12 +19,6 @@ public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
     private final PaginationProperties paginationProperties;
-
-    public List<ChatMessageResponse> getChatMessagesSaved(UUID roomId) {
-        return chatMessageRepository.findByChatRoomIdOrderBySentAtAsc(roomId).stream()
-                .map(ChatMessageResponse::fromEntity)
-                .toList();
-    }
 
     public Slice<ChatMessageResponse> getChatMessages(UUID roomId, LocalDateTime lastSentAt, Long lastId) {
         PageRequest pageRequest = PageRequest.of(0, paginationProperties.getPageSize());
