@@ -27,7 +27,7 @@ function joinRoom(button) {
     });
 }
 
-function connect(onConnected) {
+function chatConnect(onConnected) {
     const socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
 
@@ -35,6 +35,22 @@ function connect(onConnected) {
         stompClient.subscribe('/topic/chatroom.' + roomId, function (messageOutput) {
             const msg = JSON.parse(messageOutput.body);
             addMessage(msg);
+        });
+
+        if (typeof onConnected == 'function') {
+            onConnected();
+        }
+    });
+}
+
+function notiConnect(onConnected) {
+    const socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe('/topic/notification.' + userId, function (notificationOutput) {
+            const noti = JSON.parse(notificationOutput.body);
+            addNotification(noti, true);
         });
 
         if (typeof onConnected == 'function') {
@@ -141,7 +157,7 @@ function loadNotifications(count) {
             document.getElementById('content-main').hidden = false;
 
             data.content.forEach(notification => {
-                addNotification(notification);
+                addNotification(notification, false);
             });
 
             observeLastItem(notiObserver, '#notifications > #noti-dom');
@@ -151,7 +167,7 @@ function loadNotifications(count) {
     });
 }
 
-function addNotification(noti) {
+function addNotification(noti, isNew) {
     const div = document.getElementById('notifications');
     const notiDom = document.getElementById('noti-dom');
 
@@ -165,7 +181,11 @@ function addNotification(noti) {
     clone.querySelector('.sent-at').textContent = noti.sentAt;
     clone.querySelector('.is-read').classList.add(noti.read.toString());
 
-    div.append(clone, createElement('hr'));
+    if (isNew) {
+        div.prepend(clone, createElement('hr'));
+    } else {
+        div.append(clone, createElement('hr'));
+    }
 }
 
 function updateReadStatus(btn) {

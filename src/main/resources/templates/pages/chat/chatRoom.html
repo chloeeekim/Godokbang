@@ -33,7 +33,7 @@
 <script th:inline="javascript">
     const roomId = [[${chatRoom.id}]];
     let stompClient = null;
-    connect(() => getPreviousMessages());
+    chatConnect(() => getPreviousMessages());
     function autoResize(textarea) {
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight > 300 ? '300px' : textarea.scrollHeight + 'px';

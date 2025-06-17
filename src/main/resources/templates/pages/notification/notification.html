@@ -45,11 +45,15 @@
     </div>
 </div>
 <script th:inline="javascript">
+    const userId = [[${userId}]];
+    let stompClient = null;
     let notiHasNext = true;
     let notiFetching = false;
-    window.addEventListener('DOMContentLoaded', function() {
-        loadNotifications(10);
-    });
+    notiConnect(() => loadNotifications(10));
+
+<!--    window.addEventListener('DOMContentLoaded', function() {-->
+<!--        loadNotifications(10);-->
+<!--    });-->
     const notiObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (notiFetching || !notiHasNext) {
