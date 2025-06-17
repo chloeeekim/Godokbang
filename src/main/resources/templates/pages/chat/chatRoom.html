@@ -33,7 +33,19 @@
 <script th:inline="javascript">
     const roomId = [[${chatRoom.id}]];
     let stompClient = null;
-    chatConnect(() => getPreviousMessages());
+    let chatHasNext = true;
+    let chatFetching = false;
+    chatConnect(() => loadMessages(true));
+    const chatObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (chatFetching || !chatHasNext) {
+                return;
+            }
+            if (entry.isIntersecting) {
+                loadMessages();
+            }
+        });
+    });
     function autoResize(textarea) {
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight > 300 ? '300px' : textarea.scrollHeight + 'px';

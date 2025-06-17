@@ -34,7 +34,7 @@ function chatConnect(onConnected) {
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/topic/chatroom.' + roomId, function (messageOutput) {
             const msg = JSON.parse(messageOutput.body);
-            addMessage(msg);
+            addMessage(msg, true);
         });
 
         if (typeof onConnected == 'function') {
@@ -59,9 +59,14 @@ function notiConnect(onConnected) {
     });
 }
 
-function addMessage(msg) {
+function addMessage(msg, isNew, isFirstFetch) {
     const chatBox = document.getElementById('chat-box');
     const line = document.createElement('div');
+    line.dataset.id = msg.id;
+    line.dataset.sentAt = msg.sentAt;
+
+    const isScrollBottom = (chatBox.scrollTop === chatBox.scrollHeight);
+
     if (msg.type == 'ENTER' || msg.type == 'LEAVE' || msg.type == 'CREATE') {
         line.innerText = msg.content;
         line.classList.add('system-message');
@@ -89,8 +94,16 @@ function addMessage(msg) {
         line.classList.add('wrap-message');
         line.append(meta, img);
     }
-    chatBox.append(line);
-    chatBox.scrollTop = chatBox.scrollHeight;
+
+    if (isNew) {
+        chatBox.append(line);
+    } else {
+        chatBox.prepend(line);
+    }
+
+    if (isFirstFetch || (isScrollBottom && isNew)) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 }
 
 function createElement(tag, className, textContent) {
@@ -100,17 +113,38 @@ function createElement(tag, className, textContent) {
     return elem;
 }
 
-function getPreviousMessages() {
-    fetch(`/chat/${roomId}/message`, {
+function loadMessages(isFirstFetch) {
+    if (!chatHasNext) return;
+
+    chatFetching = true;
+    const firstItem = document.querySelector('#chat-box > div');
+    const baseUrl = `/api/chat/${roomId}`;
+    let queryString;
+
+    if (firstItem) {
+        const params = {
+            lastSentAt: firstItem.dataset.sentAt.replace(" ", "T"),
+            lastId: firstItem.dataset.id
+        };
+        queryString = new URLSearchParams(params).toString();
+    }
+
+    const url = !firstItem ? baseUrl : `${baseUrl}?${queryString}`;
+
+    fetch(url, {
         method: 'GET'
     })
     .then(res => res.json())
     .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-            data.forEach(message => {
-                addMessage(message);
+        if (!data.empty) {
+            data.content.forEach(message => {
+                addMessage(message, false, isFirstFetch);
             });
+
+            observeFirstItem(chatObserver, '#chat-box > div');
         }
+        chatFetching = false;
+        chatHasNext = !data.last;
     });
 }
 
@@ -133,13 +167,14 @@ function loadNotifications(count) {
 
     notiFetching = true;
     const notis = document.querySelectorAll('#notifications > #noti-dom');
+    const lastItem = notis[notis.length - 1];
     const baseUrl = `/api/notifications`;
     let queryString;
 
     if (notis.length != 0) {
         const params = {
-            lastCreatedAt: notis[notis.length - 1].dataset.createdAt,
-            lastId: notis[notis.length - 1].dataset.id,
+            lastCreatedAt: lastItem.dataset.createdAt,
+            lastId: lastItem.dataset.id,
             size: count
         };
         queryString = new URLSearchParams(params).toString();
@@ -237,4 +272,13 @@ function observeLastItem(observer, selector) {
     if (observer) observer.disconnect();
 
     observer.observe(lastItem);
+}
+
+function observeFirstItem(observer, selector) {
+    const firstItem = document.querySelector(selector);
+
+    if (!firstItem) return;
+    if (observer) observer.disconnect();
+
+    observer.observe(firstItem);
 }
