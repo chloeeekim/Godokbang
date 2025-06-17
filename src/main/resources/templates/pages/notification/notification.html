@@ -50,10 +50,6 @@
     let notiHasNext = true;
     let notiFetching = false;
     notiConnect(() => loadNotifications(10));
-
-<!--    window.addEventListener('DOMContentLoaded', function() {-->
-<!--        loadNotifications(10);-->
-<!--    });-->
     const notiObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (notiFetching || !notiHasNext) {
