@@ -22,8 +22,7 @@ public class SecurityConfig {
                .csrf(AbstractHttpConfigurer::disable)
                .authorizeHttpRequests(auth -> auth
                        .requestMatchers("/", "/login", "/join", "/login-error", "/css/**").permitAll()
-                       .requestMatchers("/home").permitAll() // 테스트용
-                       .anyRequest().authenticated()
+                       .anyRequest().permitAll() // 테스트용 - 추후 authenticated로 바꿀 것
                )
                .formLogin(form -> form
                        .loginPage("/login")

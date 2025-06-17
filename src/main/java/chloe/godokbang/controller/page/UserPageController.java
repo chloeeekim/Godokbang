@@ -1,4 +1,4 @@
-package chloe.godokbang.controller;
+package chloe.godokbang.controller.page;
 
 import chloe.godokbang.auth.CustomUserDetails;
 import chloe.godokbang.dto.request.JoinRequest;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class UserController {
+public class UserPageController {
 
     private final UserService userService;
 

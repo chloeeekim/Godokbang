@@ -1,4 +1,4 @@
-package chloe.godokbang.controller;
+package chloe.godokbang.controller.page;
 
 import chloe.godokbang.auth.CustomUserDetails;
 import chloe.godokbang.domain.User;
@@ -30,7 +30,7 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/chat")
-public class ChatRoomController {
+public class ChatRoomPageController {
 
     private final ChatRoomService chatRoomService;
     private final KafkaChatProducer kafkaChatProducer;
