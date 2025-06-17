@@ -26,4 +26,4 @@ cloud:
 # properties
 app:
   pagination:
-    page-size: 10
+    page-size: 20
