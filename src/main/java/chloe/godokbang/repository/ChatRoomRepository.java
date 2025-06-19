@@ -2,6 +2,7 @@ package chloe.godokbang.repository;
 
 import chloe.godokbang.domain.ChatRoom;
 import chloe.godokbang.domain.User;
+import chloe.godokbang.repository.custom.ChatRoomRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface ChatRoomRepository extends JpaRepository<ChatRoom, UUID> {
+public interface ChatRoomRepository extends JpaRepository<ChatRoom, UUID>, ChatRoomRepositoryCustom {
 
     public Page<ChatRoom> findByTitleContainingIgnoreCase(Pageable pageable, String keyword);
 
