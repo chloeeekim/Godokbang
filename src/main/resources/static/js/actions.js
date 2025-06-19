@@ -168,7 +168,7 @@ function uploadFile(input) {
         type: "IMAGE"
     })], { type: "application/json"}));
 
-    fetch('/chat/upload', {
+    fetch('/api/chat/upload', {
         method: 'POST',
         body: formData
     });
