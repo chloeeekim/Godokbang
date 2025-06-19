@@ -70,9 +70,11 @@ function notiConnect(onConnected) {
 
 function addMessage(msg, isNew, isFirstFetch) {
     const chatBox = document.getElementById('chat-box');
-    const line = document.createElement('div');
-    line.dataset.id = msg.id;
-    line.dataset.sentAt = msg.sentAt;
+    const chatDom = document.getElementById('chat-dom');
+
+    const clone = chatDom.cloneNode(true);
+    clone.dataset.id = msg.id;
+    clone.dataset.sentAt = msg.sentAt;
 
     const scrollTop = chatBox.scrollTop;
     const clientHeight = chatBox.clientHeight;
@@ -80,37 +82,29 @@ function addMessage(msg, isNew, isFirstFetch) {
     const isScrollBottom = (scrollTop + clientHeight >= scrollHeight);
 
     if (msg.type == 'ENTER' || msg.type == 'LEAVE' || msg.type == 'CREATE') {
-        line.innerText = msg.content;
-        line.classList.add('system-message');
+        const line = createElement('p', 'system-message', msg.content);
+        clone.innerHTML = "";
+        clone.append(line);
     } else if (msg.type == 'TEXT') {
-        const sender = createElement('p', 'sender-nickname', msg.senderNickname);
-        const sentAt = createElement('p', 'sent-at', msg.sentAt);
-
-        const meta = createElement('div', 'meta-message');
-        meta.append(sender, sentAt);
-
-        const content = createElement('p', 'message-content', msg.content);
-
-        line.classList.add('wrap-message');
-        line.append(meta, content);
+        clone.querySelector('.profile-img > img').setAttribute('src', msg.senderProfileImage);
+        clone.querySelector('.sender-nickname').textContent = msg.senderNickname;
+        clone.querySelector('.sent-at').textContent = msg.sentAt;
+        const content = clone.querySelector('.message-content');
+        content.textContent = msg.content;
+        content.hidden = false;
     } else {
-        const sender = createElement('p', 'sender-nickname', msg.senderNickname);
-        const sentAt = createElement('p', 'sent-at', msg.sentAt);
-
-        const meta = createElement('div', 'meta-message');
-        meta.append(sender, sentAt);
-
-        const img = createElement('img', 'img-message');
+        clone.querySelector('.profile-img > img').setAttribute('src', msg.senderProfileImage);
+        clone.querySelector('.sender-nickname').textContent = msg.senderNickname;
+        clone.querySelector('.sent-at').textContent = msg.sentAt;
+        const img = clone.querySelector('.img-message');
         img.setAttribute('src', msg.content);
-
-        line.classList.add('wrap-message');
-        line.append(meta, img);
+        img.hidden = false;
     }
 
     if (isNew) {
-        chatBox.append(line);
+        chatBox.append(clone);
     } else {
-        chatBox.prepend(line);
+        chatBox.prepend(clone);
     }
 
     if (isFirstFetch || (isScrollBottom && isNew)) {
@@ -129,7 +123,7 @@ function loadMessages(isFirstFetch) {
     if (!chatHasNext) return;
 
     chatFetching = true;
-    const firstItem = document.querySelector('#chat-box > div');
+    const firstItem = document.querySelector('#chat-box > #chat-dom');
     const baseUrl = `/api/chat/${roomId}`;
     let queryString;
 
@@ -153,7 +147,7 @@ function loadMessages(isFirstFetch) {
                 addMessage(message, false, isFirstFetch);
             });
 
-            observeFirstItem(chatObserver, '#chat-box > div');
+            observeFirstItem(chatObserver, '#chat-box > #chat-dom');
         }
         chatFetching = false;
         chatHasNext = !data.last;
@@ -361,8 +355,10 @@ function addDiscoverRoom(room) {
 
     if (room.joined) {
         clone.querySelector('.btn-open').hidden = false;
+        clone.querySelector('.btn-join').hidden = true;
     } else {
         clone.querySelector('.btn-join').hidden = false;
+        clone.querySelector('.btn-open').hidden = true;
     }
 
     div.append(clone, createElement('hr'));

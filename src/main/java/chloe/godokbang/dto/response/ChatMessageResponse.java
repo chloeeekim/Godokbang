@@ -17,15 +17,17 @@ public class ChatMessageResponse {
     private Long id;
     private UUID roomId;
     private String senderNickname;
+    private String senderProfileImage;
     private String content;
     private MessageType type;
     private String sentAt;
 
     @Builder
-    public ChatMessageResponse(Long id, UUID roomId, String senderNickname, String content, MessageType type, LocalDateTime sentAt) {
+    public ChatMessageResponse(Long id, UUID roomId, String senderNickname, String senderProfileImage, String content, MessageType type, LocalDateTime sentAt) {
         this.id = id;
         this.roomId = roomId;
         this.senderNickname = senderNickname;
+        this.senderProfileImage = senderProfileImage;
         this.content = content;
         this.type = type;
         this.sentAt = formatDateTime(sentAt);
@@ -36,6 +38,7 @@ public class ChatMessageResponse {
                 .id(chatMessage.getId())
                 .roomId(chatMessage.getChatRoom().getId())
                 .senderNickname(chatMessage.getSender().getNickname())
+                .senderProfileImage(chatMessage.getSender().getProfileImageUrl())
                 .content(chatMessage.getContent())
                 .type(chatMessage.getType())
                 .sentAt(chatMessage.getSentAt())

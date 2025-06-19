@@ -29,6 +29,21 @@
             <button type="button" class="btn-send" th:onclick="sendMessage()">Send</button>
         </div>
     </div>
+    <div hidden>
+        <div id="chat-dom" class="wrap-message">
+            <div class="profile-img">
+                <img>
+            </div>
+            <div class="message-body">
+                <div class="meta-message">
+                    <p class="sender-nickname"></p>
+                    <p class="sent-at"></p>
+                </div>
+                <div class="message-content" hidden></div>
+                <img class="img-message" hidden/>
+            </div>
+        </div>
+    </div>
 </div>
 <script th:inline="javascript">
     const roomId = [[${chatRoom.id}]];
@@ -42,7 +57,7 @@
                 return;
             }
             if (entry.isIntersecting) {
-                loadMessages();
+                loadMessages(false);
             }
         });
     });

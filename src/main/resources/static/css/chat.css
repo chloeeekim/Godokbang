@@ -112,6 +112,8 @@
     text-align: center;
     background: var(--lighter-gray-color);
     border-radius: 8px;
+    width: 100%;
+    padding: 4px;
 }
 .chat-bottom {
     display: flex;
@@ -143,8 +145,9 @@
 }
 .wrap-message {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 4px;
+    align-items: flex-start;
 }
 .sender-nickname {
     font-weight: 600;
@@ -209,6 +212,14 @@
 }
 #chatrooms {
     width: calc(100% - 5px);
+}
+.profile-img {
+    padding: 4px 4px 0 0;
+}
+.profile-img > img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
 }
 .btn-join, .btn-open {
     width: 150px;
