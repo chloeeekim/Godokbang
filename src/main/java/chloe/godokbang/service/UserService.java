@@ -1,11 +1,14 @@
 package chloe.godokbang.service;
 
+import chloe.godokbang.domain.User;
 import chloe.godokbang.dto.request.JoinRequest;
 import chloe.godokbang.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Random;
 
 @Service
 @Transactional
@@ -38,6 +41,15 @@ public class UserService {
      * @param request 회원가입 request dto
      */
     public void join(JoinRequest request) {
-        userRepository.save(request.toEntity(encoder.encode(request.getPassword())));
+        String[] defaultProfiles = {"red", "pink", "yellow", "purple", "blue", "green"};
+
+        Random random = new Random();
+        int idx = random.nextInt(defaultProfiles.length);
+        String selected = String.format("https://chloe-godokbang.s3.ap-southeast-2.amazonaws.com/profile/profile-%s.jpg", defaultProfiles[idx]);
+
+        User user = request.toEntity(encoder.encode(request.getPassword()));
+        user.updateUserProfile(selected);
+
+        userRepository.save(user);
     }
 }

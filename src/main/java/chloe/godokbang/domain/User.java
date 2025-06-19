@@ -36,11 +36,18 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatRoomUser> chatRooms = new ArrayList<>();
 
+    private String profileImageUrl;
+
     @Builder
-    public User(String email, String passwordHash, String nickname, UserRole role) {
+    public User(String email, String passwordHash, String nickname, UserRole role, String profileImageUrl) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.nickname = nickname;
         this.role = role == null ? UserRole.USER : role;
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public void updateUserProfile(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }
