@@ -1,9 +1,11 @@
 package chloe.godokbang.service;
 
+import chloe.godokbang.config.PaginationProperties;
 import chloe.godokbang.domain.ChatRoom;
 import chloe.godokbang.domain.ChatRoomUser;
 import chloe.godokbang.domain.User;
 import chloe.godokbang.domain.enums.ChatRoomRole;
+import chloe.godokbang.domain.enums.SortType;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
 import chloe.godokbang.dto.response.ChatRoomListResponse;
 import chloe.godokbang.dto.response.ChatRoomResponse;
@@ -14,10 +16,13 @@ import chloe.godokbang.repository.ChatRoomUserRepository;
 import chloe.godokbang.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +35,7 @@ public class ChatRoomService {
     private final UserRepository userRepository;
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final PaginationProperties paginationProperties;
 
     public UUID createChatRoom(CreateChatRoomRequest request, User owner) {
         ChatRoom chatRoom = ChatRoom.builder()
@@ -42,6 +48,16 @@ public class ChatRoomService {
         chatRoomUserRepository.save(new ChatRoomUser(chatRoom, owner, ChatRoomRole.OWNER));
 
         return chatRoom.getId();
+    }
+
+    public Slice<DiscoverListResponse> getChatRoomsForDiscover(String keyword, LocalDateTime lastAt, UUID lastId, SortType sortType, UUID userId) {
+        PageRequest pageRequest = PageRequest.of(0, paginationProperties.getPageSize());
+        Slice<ChatRoom> rooms = chatRoomRepository.findChatRoomsTitleContainingWithNoOffset(keyword, lastAt, lastId, pageRequest, sortType);
+        List<UUID> joined = chatRoomUserRepository.findChatRoomIdsByUserId(userId);
+
+        return rooms.map(room -> {
+            return DiscoverListResponse.fromEntity(room, joined.contains(room.getId()));
+        });
     }
 
     public Page<DiscoverListResponse> getAllChatRooms(Pageable pageable, UUID userId) {

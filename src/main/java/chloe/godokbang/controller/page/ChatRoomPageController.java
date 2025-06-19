@@ -7,17 +7,12 @@ import chloe.godokbang.dto.request.ChatMessageRequest;
 import chloe.godokbang.dto.request.CreateChatRoomRequest;
 import chloe.godokbang.dto.response.ChatRoomListResponse;
 import chloe.godokbang.dto.response.ChatRoomResponse;
-import chloe.godokbang.dto.response.DiscoverListResponse;
 import chloe.godokbang.kafka.producer.KafkaChatProducer;
 import chloe.godokbang.service.ChatRoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,21 +32,27 @@ public class ChatRoomPageController {
     private final ObjectMapper objectMapper;
 
     @GetMapping("/discover")
-    public String getDiscoverPage(@PageableDefault(page = 0, size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-                                  @RequestParam(value = "keyword", required = false) String keyword, Model model,
-                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Page<DiscoverListResponse> rooms;
-        if (keyword != null && !keyword.isBlank()) {
-            rooms = chatRoomService.searchChatRooms(pageable, keyword, userDetails.getUser().getId());
-        } else {
-            rooms = chatRoomService.getAllChatRooms(pageable, userDetails.getUser().getId());
-        }
-
-        model.addAttribute("rooms", rooms);
-        model.addAttribute("keyword", keyword);
+    public String getDiscoverPage(Model model) {
         model.addAttribute("discoverSelected", true);
         return "pages/chat/discover";
     }
+
+//    @GetMapping("/discover")
+//    public String getDiscoverPage(@PageableDefault(page = 0, size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+//                                  @RequestParam(value = "keyword", required = false) String keyword, Model model,
+//                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
+//        Page<DiscoverListResponse> rooms;
+//        if (keyword != null && !keyword.isBlank()) {
+//            rooms = chatRoomService.searchChatRooms(pageable, keyword, userDetails.getUser().getId());
+//        } else {
+//            rooms = chatRoomService.getAllChatRooms(pageable, userDetails.getUser().getId());
+//        }
+//
+//        model.addAttribute("rooms", rooms);
+//        model.addAttribute("keyword", keyword);
+//        model.addAttribute("discoverSelected", true);
+//        return "pages/chat/discover";
+//    }
 
     @GetMapping("/room/new")
     public String getCreateChatRoomPage(Model model) {
