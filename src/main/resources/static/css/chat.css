@@ -210,3 +210,6 @@
 #chatrooms {
     width: calc(100% - 5px);
 }
+.btn-join, .btn-open {
+    width: 150px;
+}

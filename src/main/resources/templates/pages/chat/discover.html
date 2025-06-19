@@ -31,17 +31,21 @@
     </div>
     <div hidden>
         <div id="room-dom" class="wrap-list discover">
-            <p class="list-title"></p>
-            <p class="list-description"></p>
-            <div class="list-user-count">
-                <div class="material-icons-outlined"
-                     style="font-size: 20px; color: var(--medium-gray-color);">
-                    group
+            <div>
+                <p class="list-title"></p>
+                <p class="list-description"></p>
+                <div class="list-user-count">
+                    <div class="material-icons-outlined"
+                         style="font-size: 20px; color: var(--medium-gray-color);">
+                        group
+                    </div>
+                    <p></p>
                 </div>
-                <p></p>
             </div>
-            <button class="btn-join" type="button" th:onclick="joinRoom(this)" hidden>Join</button>
-            <button class="btn-open" type="button" th:onclick="openRoom(this)" hidden>Open</button>
+            <div>
+                <button class="btn-join btn-primary" type="button" th:onclick="joinRoom(this)" hidden>Join</button>
+                <button class="btn-open btn-secondary" type="button" th:onclick="openRoom(this)" hidden>Open</button>
+            </div>
         </div>
     </div>
 </div>
