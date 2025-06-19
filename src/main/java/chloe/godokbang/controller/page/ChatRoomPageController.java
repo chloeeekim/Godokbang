@@ -37,23 +37,6 @@ public class ChatRoomPageController {
         return "pages/chat/discover";
     }
 
-//    @GetMapping("/discover")
-//    public String getDiscoverPage(@PageableDefault(page = 0, size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-//                                  @RequestParam(value = "keyword", required = false) String keyword, Model model,
-//                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
-//        Page<DiscoverListResponse> rooms;
-//        if (keyword != null && !keyword.isBlank()) {
-//            rooms = chatRoomService.searchChatRooms(pageable, keyword, userDetails.getUser().getId());
-//        } else {
-//            rooms = chatRoomService.getAllChatRooms(pageable, userDetails.getUser().getId());
-//        }
-//
-//        model.addAttribute("rooms", rooms);
-//        model.addAttribute("keyword", keyword);
-//        model.addAttribute("discoverSelected", true);
-//        return "pages/chat/discover";
-//    }
-
     @GetMapping("/room/new")
     public String getCreateChatRoomPage(Model model) {
         model.addAttribute("createChatRoomRequest", new CreateChatRoomRequest());

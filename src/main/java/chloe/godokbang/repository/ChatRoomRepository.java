@@ -16,8 +16,6 @@ import java.util.UUID;
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, UUID>, ChatRoomRepositoryCustom {
 
-    public Page<ChatRoom> findByTitleContainingIgnoreCase(Pageable pageable, String keyword);
-
     @Query("""
             SELECT cr FROM ChatRoom cr
             JOIN ChatRoomUser u ON u.chatRoom = cr

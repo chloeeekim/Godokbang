@@ -60,24 +60,6 @@ public class ChatRoomService {
         });
     }
 
-    public Page<DiscoverListResponse> getAllChatRooms(Pageable pageable, UUID userId) {
-        Page<ChatRoom> all = chatRoomRepository.findAll(pageable);
-        List<UUID> joined = chatRoomUserRepository.findChatRoomIdsByUserId(userId);
-
-        return all.map(room -> {
-            return DiscoverListResponse.fromEntity(room, joined.contains(room.getId()));
-        });
-    }
-
-    public Page<DiscoverListResponse> searchChatRooms(Pageable pageable, String keyword, UUID userId) {
-        Page<ChatRoom> rooms = chatRoomRepository.findByTitleContainingIgnoreCase(pageable, keyword);
-        List<UUID> joined = chatRoomUserRepository.findChatRoomIdsByUserId(userId);
-
-        return rooms.map(room -> {
-            return DiscoverListResponse.fromEntity(room, joined.contains(room.getId()));
-        });
-    }
-
     public void joinRoom(UUID chatRoomId, User user) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).get();
         // TODO 기존 join 여부 확인, maxUser 넘는지 확인
