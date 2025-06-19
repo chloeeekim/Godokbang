@@ -4,84 +4,63 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/contentLayout}"
       layout:fragment="content">
-<div>
+<div style="height: 100%">
     <div class="content-top">
-        <form th:method="get" th:action="@{/chat/discover}">
+        <div>
             <div class="search-bar">
                 <div class="material-icons-outlined" style="padding: 8px; color: var(--light-gray-color);">search</div>
-                <input class="search-input" type="text" name="keyword" th:value="${keyword}">
-                <button type="submit" class="btn-search">Search</button>
+                <input class="search-input" type="text" name="keyword">
+                <button type="button" class="btn-search" th:onclick="searchChatRooms()">Search</button>
             </div>
-        </form>
+        </div>
     </div>
-    <div th:if="${rooms.totalElements == 0}" class="empty-content">
+    <div id="empty-content" class="empty-content">
         <p class="text-primary">Nothing found.</p>
         <p class="text-secondary">Get started by creating a chat room.</p>
         <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/room/new}'|">
             Create new room
         </button>
     </div>
-    <div th:unless="${rooms.totalElements == 0}" class="content-main">
-        <table>
-            <tbody>
-            <tr th:each="row : ${rooms}">
-                <td>
-                    <div class="wrap-list discover">
-                        <p class="list-title" th:text="${row.title}"></p>
-                        <p class="list-description" th:text="${row.description}"></p>
-                        <div class="list-user-count">
-                            <div class="material-icons-outlined"
-                                 style="font-size: 20px; color: var(--medium-gray-color);">
-                                group
-                            </div>
-                            <p th:text="${row.userCount} + ' / ' + ${row.maxUser}"></p>
-                        </div>
-                        <button th:unless="${row.joined}" type="button" th:data-id="${row.id}" th:onclick="joinRoom(this)">Join</button>
-                        <button th:if="${row.joined}" type="button" th:data-id="${row.id}" th:onclick="|location.href='@{/chat/room/{id}(id=${row.id})}'|">Open</button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="content-bottom">
-            <div class="pagination" th:with="
-            pageNumber = ${rooms.pageable.pageNumber},
-            pageSize = ${rooms.pageable.pageSize},
-            totalPages = ${rooms.totalPages},
-            startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
-            tempEndPage = ${startPage + pageSize - 1},
-            endPage = ${tempEndPage < totalPages ? tempEndPage : totalPages},
-            keyword = ${keyword}">
-                <div th:if="${rooms.first}" class="page-item disabled">
-                    <p>&lt;</p>
+    <div id="content-main" class="content-main discover" hidden>
+        <div id="chatrooms"></div>
+        <div class="floating-btn">
+            <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/room/new}'|">
+                Create new room
+            </button>
+        </div>
+    </div>
+    <div hidden>
+        <div id="room-dom" class="wrap-list discover">
+            <p class="list-title"></p>
+            <p class="list-description"></p>
+            <div class="list-user-count">
+                <div class="material-icons-outlined"
+                     style="font-size: 20px; color: var(--medium-gray-color);">
+                    group
                 </div>
-                <div th:unless="${rooms.first}" class="page-item"
-                     th:onclick="|location.href='@{/chat/discover(page=${pageNumber - 1},keyword=${keyword})}'|">
-                    <p>&lt;</p>
-                </div>
-                <div th:each="page: ${#numbers.sequence(startPage, endPage)}">
-                    <div th:if="${page == pageNumber + 1}" class="page-item selected">
-                        <p th:text="${page}"></p>
-                    </div>
-                    <div th:unless="${page == pageNumber + 1}" class="page-item"
-                         th:onclick="|location.href='@{/chat/discover(page=${page - 1},keyword=${keyword})}'|">
-                        <p th:text="${page}"></p>
-                    </div>
-                </div>
-                <div th:if="${rooms.last}" class="page-item disabled">
-                    <p>&gt;</p>
-                </div>
-                <div th:unless="${rooms.last}" class="page-item"
-                     th:onclick="|location.href='@{/chat/discover(page=${pageNumber + 1},keyword=${keyword})}'|">
-                    <p>&gt;</p>
-                </div>
+                <p></p>
             </div>
-            <div class="right-side">
-                <button type="button" class="btn-primary" th:onclick="|location.href='@{/chat/room/new}'|">
-                    Create new room
-                </button>
-            </div>
+            <button class="btn-join" type="button" th:onclick="joinRoom(this)" hidden>Join</button>
+            <button class="btn-open" type="button" th:onclick="openRoom(this)" hidden>Open</button>
         </div>
     </div>
 </div>
+<script th:inline="javascript">
+    let discoverHasNext = true;
+    let discoverFetching = false;
+    let isSearched = false;
+    document.addEventListener("DOMContentLoaded", function() {
+        loadDiscoverList();
+    });
+    const discoverObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (discoverFetching || !discoverHasNext) {
+                return;
+            }
+            if (entry.isIntersecting) {
+                loadDiscoverList();
+            }
+        });
+    });
+</script>
 </html>

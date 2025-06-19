@@ -158,6 +158,9 @@ tr {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    &.discover {
+        height: calc(100% - 52px);
+    }
     &::-webkit-scrollbar {
         width: 5px;
     }
@@ -169,6 +172,9 @@ tr {
         background-color: var(--lighter-gray-color);
         border-radius: 8px;
     }
+}
+.content-top {
+    margin-bottom: 10px;
 }
 .content-bottom {
     display: flex;
@@ -204,6 +210,9 @@ tr {
 div[hidden] {
     display: none;
 }
+button[hidden] {
+    display: none;
+}
 .wrap-list {
     display: flex;
     border-radius: 8px;
@@ -233,4 +242,10 @@ div[hidden] {
 .fade-out.hide {
     opacity: 0;
     transform: translateY(-10px);
+}
+.floating-btn {
+    position: fixed;
+    left: 50%;
+    transform: translateX(50%);
+    bottom: 100px;
 }

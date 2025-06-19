@@ -17,13 +17,22 @@ function sendMessage() {
 }
 
 function joinRoom(button) {
-    const roomId = button.getAttribute('data-id');
+    const roomId = button.closest('#room-dom').dataset.id;
     fetch(`/chat/room/${roomId}/join`, {
         method: 'POST'
     }).then(res => {
         if (res.redirected) {
             window.location.href = res.url;
         }
+    });
+}
+
+function openRoom(button) {
+    const roomId = button.closest('#room-dom').dataset.id;
+    fetch(`/chat/room/${roomId}`, {
+        method: 'GET'
+    }).then(res => {
+        window.location.href = res.url;
     });
 }
 
@@ -284,4 +293,85 @@ function observeFirstItem(observer, selector) {
     if (observer) observer.disconnect();
 
     observer.observe(firstItem);
+}
+
+function loadDiscoverList() {
+    if (!discoverHasNext) return;
+
+    discoverFetching = true;
+    const rooms = document.querySelectorAll('#chatrooms > #room-dom');
+    const lastItem = rooms[rooms.length - 1];
+    const baseUrl = `/api/chat/discover`;
+    let queryString;
+    const keyword = document.querySelector('.search-bar > .search-input').value;
+
+    if (rooms.length != 0) {
+        const params = {
+            lastAt: lastItem.dataset.messageAt,
+            lastId: lastItem.dataset.id,
+            keyword: keyword
+        };
+        queryString = new URLSearchParams(params).toString();
+    } else {
+        if (isSearched) {
+            const params = {
+                keyword: keyword
+            };
+            queryString = new URLSearchParams(params).toString();
+        }
+    }
+
+    const url = queryString == null ? baseUrl : `${baseUrl}?${queryString}`;
+
+    fetch(url, {
+        method: 'GET'
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.empty) {
+            document.getElementById('empty-content').hidden = true;
+            document.getElementById('content-main').hidden = false;
+
+            data.content.forEach(room => {
+                addDiscoverRoom(room);
+            });
+
+            observeLastItem(discoverObserver, '#chatrooms > #room-dom');
+        } else {
+            document.getElementById('empty-content').hidden = false;
+            document.getElementById('content-main').hidden = true;
+        }
+        discoverFetching = false;
+        discoverHasNext = !data.last;
+    });
+}
+
+function addDiscoverRoom(room) {
+    const div = document.getElementById('chatrooms');
+    const roomDom = document.getElementById('room-dom');
+
+    const clone = roomDom.cloneNode(true);
+    clone.dataset.id = room.id;
+    clone.dataset.messageAt = room.latestMsgAt;
+    clone.dataset.createdAt = room.createdAt;
+
+    clone.querySelector('.list-title').textContent = room.title;
+    clone.querySelector('.list-description').textContent = room.description;
+    clone.querySelector('.list-user-count > p').textContent = `${room.userCount} / ${room.maxUser}`;
+
+    if (room.joined) {
+        clone.querySelector('.btn-open').hidden = false;
+    } else {
+        clone.querySelector('.btn-join').hidden = false;
+    }
+
+    div.append(clone, createElement('hr'));
+}
+
+function searchChatRooms() {
+    document.getElementById('chatrooms').innerHTML = "";
+    discoverHasNext = true;
+    isSearched = true;
+
+    loadDiscoverList();
 }

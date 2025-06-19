@@ -202,3 +202,11 @@
     align-items: center;
     width: 100%;
 }
+#chatrooms > hr {
+    &:last-child {
+        display: none;
+    }
+}
+#chatrooms {
+    width: calc(100% - 5px);
+}
