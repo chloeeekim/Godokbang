@@ -15,10 +15,9 @@
 }
 .noti-message {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
+        flex-direction: row;
+        gap: 4px;
+        align-items: flex-start;
 }
 .noti-actions {
     display: flex;

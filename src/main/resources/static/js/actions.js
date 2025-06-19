@@ -217,10 +217,20 @@ function addNotification(noti, isNew) {
     clone.dataset.createdAt = noti.createdAt;
 
     clone.querySelector('.room-title > p').textContent = noti.roomTitle;
+    clone.querySelector('.profile-img > img').setAttribute('src', noti.senderProfileImage);
     clone.querySelector('.sender-nickname').textContent = noti.senderNickname;
-    clone.querySelector('.message-content').textContent = noti.content;
     clone.querySelector('.sent-at').textContent = noti.sentAt;
     clone.querySelector('.is-read').classList.add(noti.read.toString());
+
+    if (noti.type == 'TEXT') {
+        const content = clone.querySelector('.message-content');
+        content.textContent = noti.content;
+        content.hidden = false;
+    } else if (noti.type == 'IMAGE') {
+        const img = clone.querySelector('.img-message');
+        img.setAttribute('src', noti.content);
+        img.hidden = false;
+    }
 
     if (isNew) {
         div.prepend(clone, createElement('hr'));

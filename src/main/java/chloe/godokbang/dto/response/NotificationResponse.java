@@ -18,6 +18,7 @@ public class NotificationResponse {
     private UUID roomId;
     private String roomTitle;
     private String senderNickname;
+    private String senderProfileImage;
     private String content;
     private MessageType type;
     private String sentAt;
@@ -25,12 +26,13 @@ public class NotificationResponse {
     private boolean isRead;
 
     @Builder
-    public NotificationResponse(Long id, UUID roomId, String roomTitle, String senderNickname, String content, MessageType type,
-                                LocalDateTime sentAt, LocalDateTime createdAt, boolean isRead) {
+    public NotificationResponse(Long id, UUID roomId, String roomTitle, String senderNickname, String senderProfileImage,
+                                String content, MessageType type, LocalDateTime sentAt, LocalDateTime createdAt, boolean isRead) {
         this.id = id;
         this.roomId = roomId;
         this.roomTitle = roomTitle;
         this.senderNickname = senderNickname;
+        this.senderProfileImage = senderProfileImage;
         this.content = content;
         this.type = type;
         this.sentAt = formatDateTime(sentAt);
@@ -44,6 +46,7 @@ public class NotificationResponse {
                 .roomId(notification.getMessage().getChatRoom().getId())
                 .roomTitle(notification.getMessage().getChatRoom().getTitle())
                 .senderNickname(notification.getMessage().getSender().getNickname())
+                .senderProfileImage(notification.getMessage().getSender().getProfileImageUrl())
                 .content(notification.getMessage().getContent())
                 .type(notification.getMessage().getType())
                 .sentAt(notification.getMessage().getSentAt())
