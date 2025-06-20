@@ -1,7 +1,7 @@
 # 💬 고독한채팅방 : 실시간 채팅 서비스
 
 > Spring Boot와 Kafka를 공부하며 진행한 개인 프로젝트입니다. 사용자는 채팅방을 검색하고, 채팅방에 들어가 다른 사용자와 이미지 전송을 포함한 실시간 채팅을 나눌 수 있으며, 새로운 채팅에 대한 알림을
-> 받을 수 있습니다. Thymeleaf를 사용하여 프론트엔드를 구현하였으며, 무한 스크롤 동작을 구현하기 위해 QueryDSL을 사용하였습니다. 또, Amazon AWS의 S3 서비스를 연동하여 이미지를 저장하도록
+> 받을 수 있습니다. Thymeleaf를 사용하여 프론트엔드를 구현하였으며, 무한 스크롤 동작을 구현하기 위해 QueryDSL을 사용하였습니다. 또, Amazon S3 서비스를 연동하여 이미지를 저장하도록
 > 하였습니다.
 
 ## 🔍 About 고독한채팅방
@@ -17,7 +17,7 @@
 - JAVA `17`
 - Spring Boot `3.4.5`, Spring Security `6.4.5`, Thymeleaf `3.5.0`
 - Spring Data JPA `3.4.5`, QueryDSL `5.0.0`
-- H2 `2.3.232`, Amazon AWS S3 (Spring Cloud AWS `2.2.6.RELEASE`)
+- H2 `2.3.232`, Amazon S3 (Spring Cloud AWS `2.2.6.RELEASE`)
 - Apache Kafka (Broker `3.9.1`), Spring Kafka Client `3.3.6`
 
 ## 👩‍💻 구현 내용
@@ -62,7 +62,7 @@
     - 공통 레이아웃과 fragment 구조를 활용하여 유지보수성과 재사용성 확보
 
 
-6. **Amazon AWS S3를 이용한 이미지 업로드 기능 구현**
+6. **Amazon S3를 이용한 이미지 업로드 기능 구현**
     - 사용자 프로필 이미지, 채팅방 메시지 등 다양한 이미지 파일을 AWS S3 버킷에 저장하여 관리
     - MultipartFile 형태로 전달된 파일을 S3에 업로드하고, 접근 가능한 URL을 생성하여 DB에 저장
     - 업로드 시 파일명 중복 방지를 위해 UUID 기반의 고유 파일명 생성 스키마 재정의
@@ -74,21 +74,24 @@
 ## 💻 UI 및 기능 구현 화면
 
 - 로그인 / 회원가입 화면
-  - 로그인 및 회원가입 기능이 구현되어 있으며, 입력값이 유효하지 않은 경우 적절한 에러 메시지가 출력됩니다.
-   ![ui_auth1.png](readme_assets/ui_auth1.png)
-   ![ui_auth2.png](readme_assets/ui_auth2.png)
-   ![ui_auth3.png](readme_assets/ui_auth3.png)
-   ![ui_auth4.png](readme_assets/ui_auth4.png)
-   ![ui_auth5.png](readme_assets/ui_auth5.png)
+    - 로그인 및 회원가입 기능이 구현되어 있으며, 입력값이 유효하지 않은 경우 적절한 에러 메시지가 출력됩니다.
+      ![ui_auth1.png](readme_assets/ui_auth1.png)
+      ![ui_auth2.png](readme_assets/ui_auth2.png)
+      ![ui_auth3.png](readme_assets/ui_auth3.png)
+      ![ui_auth4.png](readme_assets/ui_auth4.png)
+      ![ui_auth5.png](readme_assets/ui_auth5.png)
 - 채팅방 리스트 화면
-  - 채팅방 리스트를 확인할 수 있으며, 조인 가능한 경우 Join 버튼이, 조인되어 있는 채팅방의 경우 Open 버튼이 표시됩니다. 상단 서치바를 통해 키워드로 채팅방 리스트를 조회할 수 있습니다. 채팅방 리스트는 무한 스크롤 방식으로 동작하며, 스크롤이 하단에 위치하면 자동으로 추가 데이터 로딩이 이루어집니다.
-   ![ui_discover1.png](readme_assets/ui_discover1.png)
-   ![ui_disocver2.png](readme_assets/ui_disocver2.png)
+    - 채팅방 리스트를 확인할 수 있으며, 조인 가능한 경우 Join 버튼이, 조인되어 있는 채팅방의 경우 Open 버튼이 표시됩니다. 상단 서치바를 통해 키워드로 채팅방 리스트를 조회할 수 있습니다. 채팅방
+      리스트는 무한 스크롤 방식으로 동작하며, 스크롤이 하단에 위치하면 자동으로 추가 데이터 로딩이 이루어집니다.
+      ![ui_discover1.png](readme_assets/ui_discover1.png)
+      ![ui_disocver2.png](readme_assets/ui_disocver2.png)
 - 실시간 채팅
-  - 다른 사용자들과 채팅방에서 실시간으로 채팅이 가능합니다. 채팅방이 만들어지거나 사용자가 채팅방에 들어오는 등의 경우 시스템 메시지가 표시되며, 이미지도 전송 가능합니다. 채팅 메시지는 무한 스크롤 방식으로 동작하며, 스크롤이 상단에 위치하면 자동으로 추가 데이터 로딩이 이루어집니다.
-    ![ui_chat1.png](readme_assets/ui_chat1.png)
-    ![ui_chat2.gif](readme_assets/ui_chat2.gif)
+    - 다른 사용자들과 채팅방에서 실시간으로 채팅이 가능합니다. 채팅방이 만들어지거나 사용자가 채팅방에 들어오는 등의 경우 시스템 메시지가 표시되며, 이미지도 전송 가능합니다. 채팅 메시지는 무한 스크롤 방식으로
+      동작하며, 스크롤이 상단에 위치하면 자동으로 추가 데이터 로딩이 이루어집니다.
+      ![ui_chat1.png](readme_assets/ui_chat1.png)
+      ![ui_chat2.gif](readme_assets/ui_chat2.gif)
 - 실시간 알림
-  - 사용자가 속한 채팅방에 새로운 메시지가 존재하는 경우, 알림 목록에서 확인할 수 있습니다. 알림 또한 실시간으로 목록에 추가되어 확인할 수 있으며, 무한 스크롤 방식으로 동작하여 스크롤이 하단에 위치하면 자동으로 추가 데이터 로딩이 이루어집니다.
-    ![ui_noti1.png](readme_assets/ui_noti1.png)
-    ![ui_noti2.gif](readme_assets/ui_noti2.gif)
+    - 사용자가 속한 채팅방에 새로운 메시지가 존재하는 경우, 알림 목록에서 확인할 수 있습니다. 알림 또한 실시간으로 목록에 추가되어 확인할 수 있으며, 무한 스크롤 방식으로 동작하여 스크롤이 하단에 위치하면
+      자동으로 추가 데이터 로딩이 이루어집니다.
+      ![ui_noti1.png](readme_assets/ui_noti1.png)
+      ![ui_noti2.gif](readme_assets/ui_noti2.gif)
