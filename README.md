@@ -87,8 +87,8 @@
 - 실시간 채팅
   - 다른 사용자들과 채팅방에서 실시간으로 채팅이 가능합니다. 채팅방이 만들어지거나 사용자가 채팅방에 들어오는 등의 경우 시스템 메시지가 표시되며, 이미지도 전송 가능합니다. 채팅 메시지는 무한 스크롤 방식으로 동작하며, 스크롤이 상단에 위치하면 자동으로 추가 데이터 로딩이 이루어집니다.
     ![ui_chat1.png](readme_assets/ui_chat1.png)
-    ![ui_chat2.mp4](readme_assets/ui_chat2.mp4)
+    ![ui_chat2.gif](readme_assets/ui_chat2.gif)
 - 실시간 알림
   - 사용자가 속한 채팅방에 새로운 메시지가 존재하는 경우, 알림 목록에서 확인할 수 있습니다. 알림 또한 실시간으로 목록에 추가되어 확인할 수 있으며, 무한 스크롤 방식으로 동작하여 스크롤이 하단에 위치하면 자동으로 추가 데이터 로딩이 이루어집니다.
     ![ui_noti1.png](readme_assets/ui_noti1.png)
-    [ui_noti2.mp4](readme_assets/ui_noti2.mp4)
+    ![ui_noti2.gif](readme_assets/ui_noti2.gif)
