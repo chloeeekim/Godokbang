@@ -67,6 +67,10 @@
     - MultipartFile 형태로 전달된 파일을 S3에 업로드하고, 접근 가능한 URL을 생성하여 DB에 저장
     - 업로드 시 파일명 중복 방지를 위해 UUID 기반의 고유 파일명 생성 스키마 재정의
 
+## 📐 Architecture
+
+![Godokbang Architecture.png](readme_assets/Godokbang%20Architecture.png)
+
 ## 💾 ERD
 
 ![MovieTalk ERD.png](readme_assets/Godokbang%20ERD.png)
