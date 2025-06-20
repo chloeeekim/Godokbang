@@ -43,7 +43,7 @@ function chatConnect(onConnected) {
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/topic/chatroom.' + roomId, function (messageOutput) {
             const msg = JSON.parse(messageOutput.body);
-            addMessage(msg, true);
+            addMessage(msg, true, false);
         });
 
         if (typeof onConnected == 'function') {
@@ -70,9 +70,10 @@ function notiConnect(onConnected) {
 
 function addMessage(msg, isNew, isFirstFetch) {
     const chatBox = document.getElementById('chat-box');
-    const chatDom = document.getElementById('chat-dom');
+    const template = document.getElementById('chat-template')
 
-    const clone = chatDom.cloneNode(true);
+    const clone = template.cloneNode(true);
+    clone.setAttribute('id', 'chat-dom');
     clone.dataset.id = msg.id;
     clone.dataset.sentAt = msg.sentAt;
 
@@ -210,9 +211,10 @@ function loadNotifications(count) {
 
 function addNotification(noti, isNew) {
     const div = document.getElementById('notifications');
-    const notiDom = document.getElementById('noti-dom');
+    const notiDom = document.getElementById('noti-template');
 
     const clone = notiDom.cloneNode(true);
+    clone.setAttribute('id', 'noti-dom');
     clone.dataset.id = noti.id;
     clone.dataset.createdAt = noti.createdAt;
 
@@ -352,9 +354,10 @@ function loadDiscoverList() {
 
 function addDiscoverRoom(room) {
     const div = document.getElementById('chatrooms');
-    const roomDom = document.getElementById('room-dom');
+    const roomDom = document.getElementById('room-template');
 
     const clone = roomDom.cloneNode(true);
+    clone.setAttribute('id', 'room-dom');
     clone.dataset.id = room.id;
     clone.dataset.messageAt = room.latestMsgAt;
     clone.dataset.createdAt = room.createdAt;
