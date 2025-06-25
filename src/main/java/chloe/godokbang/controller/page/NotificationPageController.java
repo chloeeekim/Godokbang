@@ -22,9 +22,4 @@ public class NotificationPageController {
         model.addAttribute("userId", userDetails.getUser().getId());
         return "pages/notification/notification";
     }
-
-
-
-    // TODO Notification read 표시 / 삭제 기능 구현
-
 }
