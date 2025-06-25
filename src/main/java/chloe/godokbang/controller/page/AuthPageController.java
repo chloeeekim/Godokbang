@@ -25,7 +25,6 @@ public class AuthPageController {
     @GetMapping(value = {"", "/"})
     public String getHomePage(@AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails != null) {
-            // TODO 로그인 되어 있는 경우 home 화면으로 이동
             return "pages/home/home";
         }
 
